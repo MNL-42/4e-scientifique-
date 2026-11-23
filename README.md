@@ -28,7 +28,7 @@ Une PWA installée s'ouvre en mode autonome, sans barre d'adresse du navigateur.
 
 1. Le projet **NACRE** est déjà relié dans `supabase-config.js` avec son URL et sa clé publishable publique.
 2. Dans le tableau de bord NACRE, ouvrir **Authentication → Sign In / Providers** et activer **Anonymous Sign-Ins**. Cette option doit être activée pour que l'inscription sans e-mail fonctionne.
-3. Le schéma `supabase/schema.sql` a été installé dans NACRE. Il crée les profils, discussions, SOS, devoirs, ressources, entraînements et le bucket privé `science4-documents`.
+3. Le schéma `supabase/schema.sql` a été installé dans NACRE. Il crée les profils, discussions, SOS et réponses, devoirs, annonces, ressources, entraînements et les buckets privés `science4-documents` et `science4-sos-images`.
 4. Les tables sont protégées par RLS et les flux de discussion, SOS et devoirs sont inscrits dans Realtime.
 5. Les comptes anonymes restent liés à l'appareil/navigateur : effacer les données du navigateur ou changer d'appareil peut faire perdre l'accès au compte.
 
@@ -66,7 +66,7 @@ Ne jamais rendre le rôle professeur automatique à partir du seul caractère `@
 
 ## État des fonctionnalités
 
-**Interface disponible :** navigation, matières, profil local, défis d'entraînement originaux, rubriques EXETAT, espace professeur, formulaires SOS, salon de discussion, devoirs, dépôt de PDF.
+**Interface disponible :** navigation responsive, matières, profil, défis originaux, EXETAT, espace professeur, SOS avec photo et réponses, chat par matière, devoirs avec suivi personnel, annonces partagées et dépôt de PDF.
 
 **Fonctionnalités qui nécessitent encore la configuration du projet Supabase :** comptes anonymes partagés, chat temps réel, flux SOS partagé, devoirs partagés, bibliothèque PDF et autorisations professeur. Aucun message ou document fictif n'est affiché.
 
