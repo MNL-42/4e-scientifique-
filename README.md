@@ -26,14 +26,33 @@ Une PWA installée s'ouvre en mode autonome, sans barre d'adresse du navigateur.
 
 ## Configuration Supabase
 
-1. Choisir le projet Supabase qui sera dédié à SCIENCE 4.
-2. Dans **Authentication → Sign In / Providers**, activer **Anonymous Sign-Ins**. Les comptes anonymes permettent une inscription sans adresse e-mail, mais restent liés à l'appareil/navigateur : effacer les données du navigateur ou changer d'appareil peut faire perdre l'accès au compte.
-3. Dans le SQL Editor, exécuter `supabase/schema.sql`.
-4. Dans **Project Settings → API Keys**, copier l'URL du projet et sa clé **publishable** (ou l'ancienne clé anon si c'est ce que le projet expose).
-5. Les coller dans `supabase-config.js` :
-   - `SCIENCE4_SUPABASE_URL`
-   - `SCIENCE4_SUPABASE_PUBLISHABLE_KEY`
-6. Vérifier que les tables du schéma sont exposées au Data API si nécessaire, puis tester les règles RLS.
+1. Le projet **NACRE** est déjà relié dans `supabase-config.js` avec son URL et sa clé publishable publique.
+2. Dans le tableau de bord NACRE, ouvrir **Authentication → Sign In / Providers** et activer **Anonymous Sign-Ins**. Cette option doit être activée pour que l'inscription sans e-mail fonctionne.
+3. Le schéma `supabase/schema.sql` a été installé dans NACRE. Il crée les profils, discussions, SOS, devoirs, ressources, entraînements et le bucket privé `science4-documents`.
+4. Les tables sont protégées par RLS et les flux de discussion, SOS et devoirs sont inscrits dans Realtime.
+5. Les comptes anonymes restent liés à l'appareil/navigateur : effacer les données du navigateur ou changer d'appareil peut faire perdre l'accès au compte.
+
+### Valider le premier professeur
+
+Un nom commençant par `@` ou le choix « Professeur — à valider » envoie une demande, mais ne donne pas automatiquement les droits professeur.
+
+Dans le SQL Editor de NACRE, repérer la demande :
+
+```sql
+select id, display_name, requested_teacher
+from public.class_profiles
+where requested_teacher = true;
+```
+
+Après vérification de l'identité du professeur, l'administrateur valide son UUID :
+
+```sql
+update public.class_profiles
+set role = 'teacher', teacher_status = 'approved'
+where id = 'UUID_DU_PROFESSEUR';
+```
+
+Ne jamais rendre le rôle professeur automatique à partir du seul caractère `@`, car n'importe quel élève pourrait se faire passer pour un enseignant.
 
 **Ne jamais mettre une clé `service_role` ou `sb_secret` dans le site.**
 
