@@ -46,13 +46,13 @@ create table if not exists public.class_announcements (
 
 -- Le nom affiché est toujours relu depuis le profil lié au compte.
 create or replace function public.science4_set_message_identity()
-returns trigger language plpgsql security invoker set search_path = public as $
+returns trigger language plpgsql security invoker set search_path = public as $$
 begin
   new.user_id := (select auth.uid());
   new.display_name := (select display_name from public.class_profiles where id=(select auth.uid()));
   return new;
 end;
-$;
+$$;
 drop trigger if exists science4_message_identity on public.class_messages;
 create trigger science4_message_identity before insert on public.class_messages
 for each row execute function public.science4_set_message_identity();
