@@ -6,6 +6,10 @@
 <meta name="theme-color" content="#101b20">
 <meta name="description" content="Le campus numérique de la 4e Scientifique : cours, entraide, devoirs et préparation à l'EXETAT.">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/science4-icon.svg" type="image/svg+xml">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
 <link rel="stylesheet" href="styles.css">
 <title>SCIENCE 4 — Le campus de la classe</title>
 </head>
@@ -28,6 +32,7 @@
     <div class="sidebar-bottom">
       <div class="side-label">PERSONNEL</div>
       <button class="nav-link" data-view="profil"><span class="nav-index">10</span>Mon espace</button>
+      <button class="nav-link" data-view="professeur"><span class="nav-index">11</span>Espace professeur</button>
       <div class="offline-state"><span class="status-dot"></span><span id="connection-label">Vérification de la connexion…</span></div>
       <small class="version">SCIENCE 4 / ÉDITION CLASSE</small>
     </div>
@@ -37,7 +42,7 @@
     <header class="topbar">
       <button class="menu-toggle" id="menu-toggle" aria-label="Ouvrir le menu">☰</button>
       <div class="breadcrumb"><span>CAMPUS</span><i>/</i><strong id="current-section">VUE GÉNÉRALE</strong></div>
-      <div class="top-actions"><span class="date-label" id="today-label"></span><button class="profile-chip" data-view="profil"><span class="avatar" id="avatar-small">É</span><span id="top-user">Visiteur</span></button></div>
+      <div class="top-actions"><button class="install-button" id="install-app" hidden>Installer l’application</button><span class="date-label" id="today-label"></span><button class="profile-chip" data-view="profil"><span class="avatar" id="avatar-small">É</span><span id="top-user">Visiteur</span></button></div>
     </header>
 
     <section class="view active" id="view-accueil">
@@ -84,7 +89,7 @@
       <div class="page-intro"><p class="eyebrow">CAP SUR LA CERTIFICATION</p><h1>Préparer l'EXETAT.</h1><p>Un espace de préparation construit autour des épreuves, de l'entraînement et des informations officielles. Les documents doivent être vérifiés avant publication.</p></div>
       <div class="exam-feature"><div><span class="card-number">PARCOURS CANDIDAT / 2026—2027</span><h2>La régularité<br>fait la différence.</h2><p>Travaille matière par matière. Reviens sur tes erreurs. Entraîne-toi dans des conditions proches de l'examen.</p><button class="button button-light" data-view="defis">Faire un exercice <span>↗</span></button></div><div class="exam-stamp"><span>EXAMEN</span><strong>D'ÉTAT</strong><small>RDC</small></div></div>
       <div class="three-grid"><article class="panel"><p class="eyebrow">01 / ARCHIVES</p><h3>Anciennes épreuves</h3><p>Les sujets classés par année, option et matière apparaîtront ici après vérification de leur provenance et des droits de réutilisation.</p><span class="muted-note">En attente de documents vérifiés</span></article><article class="panel"><p class="eyebrow">02 / ENTRAÎNEMENT</p><h3>Examens blancs</h3><p>Des séries chronométrées avec corrigés expliqués seront proposées à partir de questions validées.</p><button class="inline-action" data-view="defis">Voir les défis →</button></article><article class="panel"><p class="eyebrow">03 / INFORMATIONS</p><h3>Dates & consignes</h3><p>Les annonces officielles seront accompagnées de leur source et de leur date de vérification.</p><a class="inline-action" href="https://www.edu-nc.gouv.cd/" target="_blank" rel="noopener">Site du ministère ↗</a></article></div>
-      <div class="section-heading small-heading"><div><p class="eyebrow">SOURCES À CONSULTER</p><h2>Informations officielles</h2></div></div><div class="source-list"><a href="https://www.edu-nc.gouv.cd/" target="_blank" rel="noopener"><span>MINISTÈRE DE L'ÉDUCATION NATIONALE</span><b>edu-nc.gouv.cd ↗</b></a><a href="https://www.edu-nc.gouv.cd/exetat" target="_blank" rel="noopener"><span>ESPACE EXETAT</span><b>Consulter ↗</b></a><a href="https://www.edu-nc.gouv.cd/epreuves-certificatives" target="_blank" rel="noopener"><span>ÉPREUVES CERTIFICATIVES</span><b>Consulter ↗</b></a></div>
+      <div class="section-heading small-heading"><div><p class="eyebrow">ENTRAÎNEMENT</p><h2>Réviser par matière</h2></div></div><div class="exam-subject-grid"><button data-view="defis">Mathématiques <span>Ouvrir les exercices ↗</span></button><button data-view="defis">Physique <span>Ouvrir les exercices ↗</span></button><button data-view="defis">Chimie <span>Ouvrir les exercices ↗</span></button><button data-view="defis">Biologie <span>Ouvrir les exercices ↗</span></button></div><div class="exam-note"><strong>À propos des anciennes épreuves</strong><p>Les sujets et corrigés ne seront publiés que si leur provenance et leurs conditions de réutilisation sont vérifiées. Les exercices d’entraînement créés pour cette plateforme seront clairement identifiés comme tels.</p></div><div class="section-heading small-heading"><div><p class="eyebrow">SOURCES À CONSULTER</p><h2>Informations officielles</h2></div></div><div class="source-list"><a href="https://www.edu-nc.gouv.cd/" target="_blank" rel="noopener"><span>MINISTÈRE DE L'ÉDUCATION NATIONALE</span><b>edu-nc.gouv.cd ↗</b></a><a href="https://www.edu-nc.gouv.cd/exetat" target="_blank" rel="noopener"><span>ESPACE EXETAT</span><b>Consulter ↗</b></a><a href="https://www.edu-nc.gouv.cd/epreuves-certificatives" target="_blank" rel="noopener"><span>ÉPREUVES CERTIFICATIVES</span><b>Consulter ↗</b></a></div>
     </section>
 
     <section class="view" id="view-sos">
@@ -119,6 +124,7 @@
       <div class="section-heading small-heading"><div><p class="eyebrow">LIENS DIRECTS</p><h2>Sources à suivre</h2></div></div><div class="source-list"><a href="https://www.edu-nc.gouv.cd/exetat" target="_blank" rel="noopener"><span>EXAMEN D'ÉTAT</span><b>Consulter ↗</b></a><a href="https://www.edu-nc.gouv.cd/epreuves-certificatives" target="_blank" rel="noopener"><span>ÉPREUVES CERTIFICATIVES</span><b>Consulter ↗</b></a></div>
     </section>
 
+    <section class="view" id="view-professeur"><div class="page-intro"><p class="eyebrow">ESPACE PÉDAGOGIQUE</p><h1>Le travail des professeurs.</h1><p>Les enseignants validés peuvent publier des devoirs, déposer des supports, expliquer une notion et répondre aux demandes SOS des élèves.</p></div><div class="teacher-status panel"><span class="eyebrow">ACCÈS ENSEIGNANT</span><h2 id="teacher-access-title">Vérification du profil nécessaire</h2><p id="teacher-access-text">Un nom commençant par @ peut signaler une demande de compte professeur, mais les droits seront accordés après validation par l’administration de la classe.</p></div><div class="teacher-grid"><form class="panel" id="assignment-form"><p class="eyebrow">NOUVEAU DEVOIR</p><h3>Publier un travail</h3><label>Matière<select id="assignment-subject"><option>Mathématiques</option><option>Physique</option><option>Chimie</option><option>Biologie</option><option>Informatique</option><option>Français</option><option>Anglais</option></select></label><label>Titre<input id="assignment-title" placeholder="Titre du devoir" required></label><label>Consigne<textarea id="assignment-description" rows="4" placeholder="Explique le travail demandé…" required></textarea></label><label>Date limite<input id="assignment-due" type="date"></label><button class="button button-dark" type="submit">Publier le devoir ↗</button><p class="form-note">La publication partagée sera disponible après validation du rôle professeur et connexion à Supabase.</p></form><div class="panel teacher-guide"><p class="eyebrow">MISSIONS DE L’ENSEIGNANT</p><h3>Accompagner la classe</h3><ul><li>Déposer les cours PDF et les supports de révision.</li><li>Publier des devoirs avec une date limite.</li><li>Répondre aux SOS et expliquer les étapes difficiles.</li><li>Créer des séries d’entraînement et leurs corrigés.</li><li>Publier une annonce pédagogique.</li></ul></div></div></section>
     <section class="view" id="view-profil">
       <div class="page-intro"><p class="eyebrow">IDENTITÉ SCOLAIRE</p><h1>Ton espace personnel.</h1><p>Renseigne ton identité de classe pour personnaliser cet aperçu. L'activation des comptes partagés et des rôles nécessitera la configuration du backend.</p></div>
       <div class="profile-layout"><form class="panel profile-form" id="profile-form"><p class="eyebrow">PROFIL DE CLASSE</p><label>Nom<input id="profile-last" required placeholder="Ton nom"></label><label>Post-nom<input id="profile-middle" required placeholder="Ton post-nom"></label><label>Prénom<input id="profile-first" required placeholder="Ton prénom"></label><label>Je suis<select id="profile-role"><option value="Élève">Élève</option><option value="Professeur — à valider">Professeur — à valider</option></select></label><button class="button button-dark" type="submit">Enregistrer sur cet appareil</button><p class="form-note">Cette version enregistre le profil uniquement sur cet appareil. La validation des professeurs et la synchronisation seront branchées à Supabase ensuite.</p></form><div class="panel profile-card"><span class="avatar large-avatar" id="profile-avatar">É</span><p class="eyebrow">MEMBRE DE SCIENCE 4</p><h2 id="profile-name">Visiteur</h2><p id="profile-role-label">Aucun profil enregistré</p><span class="muted-note">4e SCIENTIFIQUE · RDC</span></div></div>
@@ -126,6 +132,8 @@
   </main>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
