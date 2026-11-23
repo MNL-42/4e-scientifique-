@@ -33,7 +33,7 @@ $("#answer-list").addEventListener("click",e=>{const b=e.target.closest("button[
 $("#next-challenge")?.addEventListener("click",()=>{practiceIndex=(practiceIndex+1)%practiceQuestions.length;showPracticeQuestion()});
 showPracticeQuestion();
 $$(".filter-pill").forEach(b=>b.addEventListener("click",()=>{$$(".filter-pill").forEach(x=>x.classList.remove("active"));b.classList.add("active");toast("Les devoirs seront filtrés dès leur publication.")}));
-$$(".channel").forEach(b=>b.addEventListener("click",()=>{$$(".channel").forEach(x=>x.classList.remove("active"));b.classList.add("active");toast("Salon sélectionné. La messagerie sera activée avec Supabase.")}));
+
 if(location.hash)showView(location.hash.slice(1));
 if("serviceWorker" in navigator&&location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(err=>console.warn("Service worker:",err)));
 /* Installation PWA : le navigateur ne peut afficher la demande qu'après une action utilisateur. */
