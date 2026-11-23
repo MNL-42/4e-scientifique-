@@ -19,20 +19,20 @@
     <a class="brand" href="#accueil" aria-label="SCIENCE 4 accueil"><span class="brand-mark">S4</span><span><strong>SCIENCE 4</strong><small>LE CAMPUS DE LA CLASSE</small></span></a>
     <div class="side-label">ESPACE DE TRAVAIL</div>
     <nav class="main-nav" aria-label="Navigation principale">
-      <button class="nav-link active" data-view="accueil"><span class="nav-index">01</span>Vue générale</button>
-      <button class="nav-link" data-view="cours"><span class="nav-index">02</span>Les cours</button>
-      <button class="nav-link" data-view="exetat"><span class="nav-index">03</span>Prépa EXETAT</button>
-      <button class="nav-link" data-view="sos"><span class="nav-index">04</span>Entraide SOS</button>
-      <button class="nav-link" data-view="devoirs"><span class="nav-index">05</span>Devoirs & travaux</button>
-      <button class="nav-link" data-view="discussions"><span class="nav-index">06</span>La salle commune</button>
-      <button class="nav-link" data-view="defis"><span class="nav-index">07</span>Défis scientifiques</button>
-      <button class="nav-link" data-view="orientation"><span class="nav-index">08</span>Après le secondaire</button>
-      <button class="nav-link" data-view="actualites"><span class="nav-index">09</span>Actualités RDC</button>
+      <button class="nav-link active" data-view="accueil"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg>Vue générale</button>
+      <button class="nav-link" data-view="cours"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16v16H4z M8 8h8 M8 12h8 M8 16h5"/></svg>Les cours</button>
+      <button class="nav-link" data-view="exetat"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2 21 6v6c0 5-3.8 8.5-9 10-5.2-1.5-9-5-9-10V6z M12 7v6 M12 16h.01"/></svg>Prépa EXETAT</button>
+      <button class="nav-link" data-view="sos"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5h16v11H8l-4 4z M8 9h8 M8 12h5"/></svg>Entraide SOS</button>
+      <button class="nav-link" data-view="devoirs"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8 M4 21c.7-4 3.4-6 8-6s7.3 2 8 6z"/></svg>Devoirs & travaux</button>
+      <button class="nav-link" data-view="discussions"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16v16H4z M8 8h8 M8 12h8 M8 16h5"/></svg>La salle commune</button>
+      <button class="nav-link" data-view="defis"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>Défis scientifiques</button>
+      <button class="nav-link" data-view="orientation"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16v16H4z M8 8h8v8H8z"/></svg>Après le secondaire</button>
+      <button class="nav-link" data-view="actualites"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 3h14v18H5z M8 7h8 M8 11h8 M8 15h5"/></svg>Actualités RDC</button>
     </nav>
     <div class="sidebar-bottom">
       <div class="side-label">PERSONNEL</div>
-      <button class="nav-link" data-view="profil"><span class="nav-index">10</span>Mon espace</button>
-      <button class="nav-link" data-view="professeur"><span class="nav-index">11</span>Espace professeur</button>
+      <button class="nav-link" data-view="profil"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v18 M3 12h18"/></svg>Mon espace</button>
+      <button class="nav-link" data-view="professeur"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l9 18H3z M12 9v5 M12 17h.01"/></svg>Espace professeur</button>
       <div class="offline-state"><span class="status-dot"></span><span id="connection-label">Vérification de la connexion…</span></div>
       <small class="version">SCIENCE 4 / ÉDITION CLASSE</small>
     </div>
@@ -42,7 +42,7 @@
     <header class="topbar">
       <button class="menu-toggle" id="menu-toggle" aria-label="Ouvrir le menu">☰</button>
       <div class="breadcrumb"><span>CAMPUS</span><i>/</i><strong id="current-section">VUE GÉNÉRALE</strong></div>
-      <div class="top-actions"><button class="install-button" id="install-app">Installer l’application</button><span class="date-label" id="today-label"></span><button class="profile-chip" data-view="profil"><span class="avatar" id="avatar-small">É</span><span id="top-user">Visiteur</span></button></div>
+      <div class="top-actions"><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Activer le mode clair" title="Changer de thème">◐</button><button class="install-button" id="install-app">Installer l’application</button><span class="date-label" id="today-label"></span><button class="profile-chip" data-view="profil"><span class="avatar" id="avatar-small">É</span><span id="top-user">Visiteur</span></button></div>
     </header>
 
     <section class="view active" id="view-accueil">
@@ -62,7 +62,7 @@
         </div>
       </div>
 
-      <div class="visual-strip"><article class="visual-tile"><img src="assets/cours-illustration.svg" alt="Cahiers et livres de cours"><div><span>ARCHIVES DE LA CLASSE</span><strong>Les cours arrivent ici.</strong><small>Les PDF seront ajoutés progressivement après numérisation des cahiers.</small></div></article><article class="visual-tile"><img src="assets/exetat-illustration.svg" alt="Dossier de préparation aux examens"><div><span>OBJECTIF EXETAT</span><strong>Se préparer avec méthode.</strong><small>Révisions, exercices originaux et informations officielles.</small></div></article><article class="visual-tile"><img src="assets/entraide-illustration.svg" alt="Deux élèves qui étudient ensemble"><div><span>TRAVAIL COLLECTIF</span><strong>La classe se soutient.</strong><small>Discussions, explications et demandes SOS.</small></div></article></div>
+      <div class="visual-strip" aria-label="Découvrir le campus" tabindex="0"><article class="visual-tile"><img src="assets/cours-illustration.svg" alt="Cahiers et livres de cours"><div><span>ARCHIVES DE LA CLASSE</span><strong>Les cours arrivent ici.</strong><small>Les PDF seront ajoutés progressivement après numérisation des cahiers.</small></div></article><article class="visual-tile"><img src="assets/exetat-illustration.svg" alt="Dossier de préparation aux examens"><div><span>OBJECTIF EXETAT</span><strong>Se préparer avec méthode.</strong><small>Révisions, exercices originaux et informations officielles.</small></div></article><article class="visual-tile"><img src="assets/entraide-illustration.svg" alt="Deux élèves qui étudient ensemble"><div><span>TRAVAIL COLLECTIF</span><strong>La classe se soutient.</strong><small>Discussions, explications et demandes SOS.</small></div></article></div>
       <div class="section-heading"><div><p class="eyebrow">TON ESPACE, EN UN COUP D'ŒIL</p><h2>On reprend où ?</h2></div><span class="section-aside">ACCÈS RAPIDES / 01—04</span></div>
       <div class="quick-grid">
         <button class="quick-card" data-view="cours"><span class="card-number">01 / RESSOURCES</span><strong>Les cours de la classe</strong><span>Retrouver les chapitres, fiches et documents déposés.</span><b>Explorer <i>↗</i></b></button>
@@ -132,6 +132,15 @@
     </section>
   </main>
 </div>
+<nav class="mobile-nav" aria-label="Navigation mobile">
+<button type="button" data-view="accueil" class="mobile-nav-item active"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg><span>Accueil</span></button>
+<button type="button" data-view="cours" class="mobile-nav-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z M8 8h8 M8 12h8 M8 16h5"/></svg><span>Cours</span></button>
+<button type="button" data-view="sos" class="mobile-nav-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 21 6v6c0 5-3.8 8.5-9 10-5.2-1.5-9-5-9-10V6z M12 7v6 M12 16h.01"/></svg><span>SOS</span></button>
+<button type="button" data-view="discussions" class="mobile-nav-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z M8 9h8 M8 12h5"/></svg><span>Salon</span></button>
+<button type="button" data-view="profil" class="mobile-nav-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8 M4 21c.7-4 3.4-6 8-6s7.3 2 8 6z"/></svg><span>Mon espace</span></button>
+<button type="button" class="mobile-nav-more" id="mobile-more" aria-expanded="false" aria-controls="more-menu"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg><span>Plus</span></button></nav>
+<div class="more-menu" id="more-menu" hidden aria-label="Autres rubriques"><button data-view="exetat">Préparation EXETAT</button><button data-view="devoirs">Devoirs & travaux</button><button data-view="defis">Défis scientifiques</button><button data-view="orientation">Après la 4e</button><button data-view="actualites">Actualités RDC</button><button data-view="professeur">Espace professeur</button></div>
+<div class="install-banner" id="install-banner"><span class="install-symbol">S4</span><div><strong>Ton campus, toujours à portée de main.</strong><small>Installe SCIENCE 4 sur ton téléphone.</small></div><button type="button" id="install-banner-button">Installer</button><button type="button" class="install-close" id="install-banner-close" aria-label="Fermer">×</button></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
