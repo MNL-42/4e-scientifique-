@@ -1,39 +1,62 @@
 # SCIENCE 4 — Le campus de la classe
 
-PWA destinée à la classe de 4e Scientifique en République démocratique du Congo.
+Plateforme de travail et d'entraide destinée à la 4e Scientifique en République démocratique du Congo.
 
-## Structure
+## Fichiers
 
-- `index.html` : pages et structure de l'application.
-- `styles.css` : système visuel responsive.
-- `app.js` : navigation et interactions de l'interface.
-- `manifest.webmanifest` : configuration d'installation PWA.
-- `sw.js` : cache de l'application pour une ouverture hors connexion.
-- `supabase/schema.sql` : base de départ pour le futur backend (à compléter avant production).
+- `index.html` : pages et structure.
+- `styles.css` : interface responsive.
+- `app.js` : navigation, défis, profil, discussions et espaces partagés.
+- `manifest.webmanifest` : configuration d'installation en mode autonome.
+- `sw.js` : cache de l'interface et des illustrations pour le mode hors connexion.
+- `assets/` : icône et illustrations originales de SCIENCE 4.
+- `supabase-config.js` : URL et clé publique du projet Supabase à renseigner.
+- `supabase/schema.sql` : schéma initial, règles RLS et bucket privé pour les documents.
+- `.github/workflows/deploy-pages.yml` : déploiement automatique GitHub Pages.
 
-## Aperçu local
+## Publication et installation PWA
 
-Ouvrir `index.html` dans un navigateur pour vérifier l'interface. Pour tester l'installation PWA et le service worker, publier le site en HTTPS (par exemple GitHub Pages).
+1. Dans GitHub, ouvrir **Settings → Pages**.
+2. Choisir **GitHub Actions** comme source de déploiement.
+3. Vérifier l'exécution du workflow **Deploy SCIENCE 4 to GitHub Pages** dans l'onglet Actions.
+4. Ouvrir l'URL Pages en HTTPS sur Android.
+5. Utiliser le bouton **Installer l'application** du site ou le menu du navigateur, puis **Installer l'application / Ajouter à l'écran d'accueil**.
 
-## État actuel
+Une PWA installée s'ouvre en mode autonome, sans barre d'adresse du navigateur. Un site web ordinaire ne peut pas forcer le plein écran sans action de l'utilisateur. Le navigateur décide aussi quand proposer son invite d'installation.
 
-Cette première livraison est un socle frontend fonctionnel :
-- navigation entre les espaces ;
-- affichage des rubriques ;
-- recherche et filtre de matières (la bibliothèque reste vide tant que les cours ne sont pas importés) ;
-- profil local de démonstration ;
-- création de brouillons SOS sur l'appareil ;
-- défi mathématique interactif ;
-- cache de l'application.
+## Configuration Supabase
 
-Les discussions, comptes partagés, rôles professeur, publications de devoirs, stockage de scans/PDF, notifications partagées et synchronisation ne sont pas encore connectés à Supabase. L'interface l'indique explicitement : aucune conversation ou archive fictive n'est affichée.
+1. Choisir le projet Supabase qui sera dédié à SCIENCE 4.
+2. Dans **Authentication → Sign In / Providers**, activer **Anonymous Sign-Ins**. Les comptes anonymes permettent une inscription sans adresse e-mail, mais restent liés à l'appareil/navigateur : effacer les données du navigateur ou changer d'appareil peut faire perdre l'accès au compte.
+3. Dans le SQL Editor, exécuter `supabase/schema.sql`.
+4. Dans **Project Settings → API Keys**, copier l'URL du projet et sa clé **publishable** (ou l'ancienne clé anon si c'est ce que le projet expose).
+5. Les coller dans `supabase-config.js` :
+   - `SCIENCE4_SUPABASE_URL`
+   - `SCIENCE4_SUPABASE_PUBLISHABLE_KEY`
+6. Vérifier que les tables du schéma sont exposées au Data API si nécessaire, puis tester les règles RLS.
 
-## Publication GitHub Pages
+**Ne jamais mettre une clé `service_role` ou `sb_secret` dans le site.**
 
-Dans le dépôt GitHub : **Settings → Pages → Deploy from a branch → main → /(root) → Save**. Après le déploiement, l'adresse sera :
+## Comptes et sécurité
 
-https://mnl-42.github.io/4e-scientifique-/
+- Les élèves peuvent enregistrer leur nom, post-nom et prénom sans adresse e-mail.
+- Un nom commençant par `@` peut signaler une demande d'accès professeur, mais ne donne pas automatiquement les droits.
+- L'administration doit valider un enseignant en attribuant le rôle `teacher` et le statut `approved` dans `class_profiles`.
+- Les politiques RLS limitent les publications pédagogiques aux enseignants approuvés.
+- Les comptes anonymes sont pratiques pour démarrer, mais ne sont pas récupérables après effacement des données locales. Prévoir un moyen de rattacher un compte durable avant un usage à grande échelle.
 
-## Sécurité avant Supabase
+## État des fonctionnalités
 
-Ne jamais placer une clé `service_role` dans le navigateur. Les rôles professeur/administrateur doivent être attribués côté serveur et protégés par RLS. Le préfixe `@` dans un nom ne constitue pas une preuve de rôle.
+**Interface disponible :** navigation, matières, profil local, défis d'entraînement originaux, rubriques EXETAT, espace professeur, formulaires SOS, salon de discussion, devoirs, dépôt de PDF.
+
+**Fonctionnalités qui nécessitent encore la configuration du projet Supabase :** comptes anonymes partagés, chat temps réel, flux SOS partagé, devoirs partagés, bibliothèque PDF et autorisations professeur. Aucun message ou document fictif n'est affiché.
+
+## Documents de cours
+
+Les PDF seront ajoutés progressivement à partir des scans des cahiers de cours de la classe. Les documents n'apparaîtront dans la bibliothèque qu'après leur dépôt et leur publication.
+
+## EXETAT et ressources
+
+Les actualités renvoient aux sources institutionnelles et affichent leur date. Les séries d'entraînement de l'application sont des questions originales de révision, pas des reproductions présentées comme des sujets officiels. Avant de publier un ancien questionnaire intégral, vérifier sa provenance et les conditions de réutilisation.
+
+Source institutionnelle : https://www.edu-nc.gouv.cd/
