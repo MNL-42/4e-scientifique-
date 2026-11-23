@@ -1,0 +1,12 @@
+{
+  "name": "SCIENCE 4 — Le campus de la classe",
+  "short_name": "SCIENCE 4",
+  "description": "Cours, entraide, devoirs et préparation à l'EXETAT pour la 4e Scientifique.",
+  "lang": "fr-CD",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f2ec",
+  "theme_color": "#10242a",
+  "orientation": "portrait"
+}
