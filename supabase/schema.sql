@@ -127,4 +127,5 @@ create policy "approved teachers upload files" on storage.objects for insert to 
 do $$ begin
  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='class_messages') then alter publication supabase_realtime add table public.class_messages; end if;
  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='sos_requests') then alter publication supabase_realtime add table public.sos_requests; end if;
+ if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='class_assignments') then alter publication supabase_realtime add table public.class_assignments; end if;
 end $$;
