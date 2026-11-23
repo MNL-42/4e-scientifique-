@@ -64,3 +64,34 @@ $("#resource-upload-form")?.addEventListener("submit",async e=>{e.preventDefault
 $("#announcement-form")?.addEventListener("submit",async e=>{e.preventDefault();if(!supa||!currentUser){toast("Connexion de classe indisponible.");return}const {data:profile}=await supa.from("class_profiles").select("role,teacher_status").eq("id",currentUser.id).maybeSingle();if(profile?.role!=="teacher"||profile?.teacher_status!=="approved"){toast("Seuls les professeurs validés peuvent publier une annonce.");return}const source=$("#announcement-source").value.trim()||null;const {error}=await supa.from("class_announcements").insert({title:$("#announcement-title").value.trim(),body:$("#announcement-body").value.trim(),source_url:source,created_by:currentUser.id});if(error){console.error(error);toast("Annonce non publiée.");return}e.target.reset();toast("Annonce publiée à la classe.");loadAnnouncements()});
 async function loadAnnouncements(){if(!supa||!currentUser)return;const {data,error}=await supa.from("class_announcements").select("title,body,source_url,published_at").order("published_at",{ascending:false}).limit(5);if(error){console.warn(error);return}const root=$("#weekly-list");if(!root)return;root.innerHTML="";if(!data?.length){root.className="empty-state compact";root.innerHTML="<strong>Le tableau de la classe est prêt.</strong><span>Les devoirs et annonces seront affichés ici dès leur publication.</span>";return}root.className="announcement-list";data.forEach(a=>{const item=document.createElement("article");item.className="announcement-item";const title=document.createElement("strong");title.textContent=a.title;const body=document.createElement("p");body.textContent=a.body;const date=document.createElement("time");date.textContent=new Date(a.published_at).toLocaleDateString("fr-FR");item.append(title,body,date);if(a.source_url){const link=document.createElement("a");link.href=a.source_url;link.target="_blank";link.rel="noopener";link.textContent="Consulter la source";item.append(link)}root.append(item)})}
 initSharedCampus();
+
+/* Navigation mobile, thème persistant et progression du défi. */
+(function(){
+ const root=document.documentElement,themeKey="science4_theme";
+ const saved=localStorage.getItem(themeKey);if(saved==="light"||saved==="dark")root.dataset.theme=saved;
+ const themeButton=document.getElementById("theme-toggle");
+ function syncTheme(){const light=root.dataset.theme==="light";themeButton.textContent=light?"☼":"◐";themeButton.setAttribute("aria-label",light?"Activer le thème sombre":"Activer le thème clair")}
+ themeButton?.addEventListener("click",()=>{root.dataset.theme=root.dataset.theme==="light"?"dark":"light";localStorage.setItem(themeKey,root.dataset.theme);syncTheme()});syncTheme();
+ const more=document.getElementById("mobile-more"),menu=document.getElementById("more-menu");
+ more?.addEventListener("click",()=>{const open=menu.hidden;menu.hidden=!open;more.setAttribute("aria-expanded",String(open))});
+ document.addEventListener("click",e=>{if(menu&&!menu.hidden&&!e.target.closest("#more-menu")&&!e.target.closest("#mobile-more")){menu.hidden=true;more?.setAttribute("aria-expanded","false")}});
+ document.querySelectorAll(".mobile-nav [data-view],#more-menu [data-view]").forEach(b=>b.addEventListener("click",()=>{menu.hidden=true;more?.setAttribute("aria-expanded","false")}));
+ document.querySelectorAll(".mobile-nav [data-view]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".mobile-nav-item").forEach(x=>x.classList.toggle("active",x===b))}));
+ document.querySelectorAll(".nav-link[data-view]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".mobile-nav-item").forEach(x=>x.classList.toggle("active",x.dataset.view===b.dataset.view))}));
+ const banner=document.getElementById("install-banner");
+ document.getElementById("install-banner-close")?.addEventListener("click",()=>{banner.hidden=true;localStorage.setItem("science4_install_banner_closed","1")});
+ document.getElementById("install-banner-button")?.addEventListener("click",()=>document.getElementById("install-app")?.click());
+ if(localStorage.getItem("science4_install_banner_closed")==="1")banner.hidden=true;
+ const challenge=document.querySelector(".challenge-card"),answers=document.getElementById("answer-list");
+ if(challenge&&answers){
+  const meta=document.createElement("div");meta.className="challenge-meta";meta.innerHTML='<span id="challenge-count">Question 1 / 6</span><strong id="challenge-score">Score : 0</strong>';
+  const progress=document.createElement("div");progress.className="challenge-progress";progress.setAttribute("role","progressbar");progress.setAttribute("aria-label","Progression des défis");progress.setAttribute("aria-valuemin","0");progress.setAttribute("aria-valuemax","6");progress.innerHTML="<span></span>";
+  const label=challenge.querySelector(".card-number");label?.after(meta,progress);
+  let score=0;const answered=new Set();
+  const update=()=>{const i=Number((label.textContent.match(/SÉRIE (\d+)/)||[])[1]||1)-1;document.getElementById("challenge-count").textContent="Question "+(i+1)+" / 6";document.getElementById("challenge-score").textContent="Score : "+score;progress.firstElementChild.style.width=((i+1)/6*100)+"%";progress.setAttribute("aria-valuenow",String(i+1))};
+  new MutationObserver(update).observe(label,{childList:true,subtree:true,characterData:true});update();
+  answers.addEventListener("click",e=>{const btn=e.target.closest("button[data-answer]");if(!btn)return;const i=Number((label.textContent.match(/SÉRIE (\d+)/)||[])[1]||1)-1;if(answered.has(i))return;answered.add(i);const correct=btn.dataset.answer==="0";if(correct){score++;btn.classList.add("correct")}else{btn.classList.add("incorrect");answers.querySelector('button[data-answer="0"]')?.classList.add("correct")}update()});
+  document.getElementById("next-challenge")?.addEventListener("click",()=>{setTimeout(()=>{answers.querySelectorAll("button").forEach(b=>b.classList.remove("correct","incorrect"));update()},0)});
+ }
+ document.querySelectorAll(".visual-tile img").forEach(img=>{img.loading="lazy";img.decoding="async"});
+})();
