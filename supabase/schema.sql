@@ -129,3 +129,42 @@ do $$ begin
  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='sos_requests') then alter publication supabase_realtime add table public.sos_requests; end if;
  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='class_assignments') then alter publication supabase_realtime add table public.class_assignments; end if;
 end $$;
+
+-- Extension SCIENCE 4 : réponses au SOS et photos jointes
+alter table public.sos_requests add column if not exists image_path text;
+
+create table if not exists public.sos_replies (
+ id uuid primary key default gen_random_uuid(),
+ sos_id uuid not null references public.sos_requests(id) on delete cascade,
+ user_id uuid not null references public.class_profiles(id) on delete cascade,
+ display_name text not null,
+ body text not null check (char_length(body) between 1 and 1200),
+ created_at timestamptz not null default now()
+);
+alter table public.sos_replies enable row level security;
+drop policy if exists "class reads sos replies" on public.sos_replies;
+create policy "class reads sos replies" on public.sos_replies for select to authenticated using (true);
+drop policy if exists "members reply to sos" on public.sos_replies;
+create policy "members reply to sos" on public.sos_replies for insert to authenticated
+with check (user_id=(select auth.uid()) and exists(select 1 from public.class_profiles p where p.id=(select auth.uid())));
+grant select,insert on public.sos_replies to authenticated;
+
+drop trigger if exists science4_sos_reply_identity on public.sos_replies;
+create trigger science4_sos_reply_identity before insert on public.sos_replies
+for each row execute function public.science4_set_message_identity();
+
+insert into storage.buckets (id,name,public,file_size_limit,allowed_mime_types)
+values ('science4-sos-images','science4-sos-images',false,8388608,array['image/jpeg','image/png','image/webp'])
+on conflict (id) do nothing;
+drop policy if exists "members upload own sos images" on storage.objects;
+create policy "members upload own sos images" on storage.objects for insert to authenticated
+with check (bucket_id='science4-sos-images' and (storage.foldername(name))[1]=(select auth.uid())::text);
+drop policy if exists "class reads sos images" on storage.objects;
+create policy "class reads sos images" on storage.objects for select to authenticated
+using (bucket_id='science4-sos-images');
+
+do $$ begin
+ if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='sos_replies') then
+   alter publication supabase_realtime add table public.sos_replies;
+ end if;
+end $$;
