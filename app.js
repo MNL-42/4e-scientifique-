@@ -32,7 +32,7 @@ function showPracticeQuestion(){const q=practiceQuestions[practiceIndex];$(".cha
 $("#answer-list").addEventListener("click",e=>{const b=e.target.closest("button[data-answer]");if(!b)return;$("button",$("#answer-list")).forEach(x=>x.classList.remove("chosen"));b.classList.add("chosen");const q=practiceQuestions[practiceIndex];$("#challenge-feedback").textContent=Number(b.dataset.answer)===q.answer?"Bonne réponse. "+q.explain:"Pas encore. "+q.explain;});
 $("#next-challenge")?.addEventListener("click",()=>{practiceIndex=(practiceIndex+1)%practiceQuestions.length;showPracticeQuestion()});
 showPracticeQuestion();
-let assignmentFilter="Tous";const completedKey="science4_completed_assignments";function completedAssignments(){try{return JSON.parse(localStorage.getItem(completedKey)||"[]")}catch{return[]}}$(".filter-pill").forEach(b=>b.addEventListener("click",()=>{$(".filter-pill").forEach(x=>x.classList.remove("active"));b.classList.add("active");assignmentFilter=b.textContent.trim();loadAssignments()}));
+let assignmentFilter="Tous";const completedKey="science4_completed_assignments";function completedAssignments(){try{return JSON.parse(localStorage.getItem(completedKey)||"[]")}catch{return[]}}$$(".filter-pill").forEach(b=>b.addEventListener("click",()=>{$$(".filter-pill").forEach(x=>x.classList.remove("active"));b.classList.add("active");assignmentFilter=b.textContent.trim();loadAssignments()}));
 
 if(location.hash)showView(location.hash.slice(1));
 if("serviceWorker" in navigator&&location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(err=>console.warn("Service worker:",err)));
