@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101b20">
+<meta name="description" content="Le campus numérique de la 4e Scientifique : cours, entraide, devoirs et préparation à l'EXETAT.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="styles.css">
+<title>SCIENCE 4 — Le campus de la classe</title>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#accueil" aria-label="SCIENCE 4 accueil"><span class="brand-mark">S4</span><span><strong>SCIENCE 4</strong><small>LE CAMPUS DE LA CLASSE</small></span></a>
+    <div class="side-label">ESPACE DE TRAVAIL</div>
+    <nav class="main-nav" aria-label="Navigation principale">
+      <button class="nav-link active" data-view="accueil"><span class="nav-index">01</span>Vue générale</button>
+      <button class="nav-link" data-view="cours"><span class="nav-index">02</span>Les cours</button>
+      <button class="nav-link" data-view="exetat"><span class="nav-index">03</span>Prépa EXETAT</button>
+      <button class="nav-link" data-view="sos"><span class="nav-index">04</span>Entraide SOS</button>
+      <button class="nav-link" data-view="devoirs"><span class="nav-index">05</span>Devoirs & travaux</button>
+      <button class="nav-link" data-view="discussions"><span class="nav-index">06</span>La salle commune</button>
+      <button class="nav-link" data-view="defis"><span class="nav-index">07</span>Défis scientifiques</button>
+      <button class="nav-link" data-view="orientation"><span class="nav-index">08</span>Après le secondaire</button>
+      <button class="nav-link" data-view="actualites"><span class="nav-index">09</span>Actualités RDC</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="side-label">PERSONNEL</div>
+      <button class="nav-link" data-view="profil"><span class="nav-index">10</span>Mon espace</button>
+      <div class="offline-state"><span class="status-dot"></span><span id="connection-label">Vérification de la connexion…</span></div>
+      <small class="version">SCIENCE 4 / ÉDITION CLASSE</small>
+    </div>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Ouvrir le menu">☰</button>
+      <div class="breadcrumb"><span>CAMPUS</span><i>/</i><strong id="current-section">VUE GÉNÉRALE</strong></div>
+      <div class="top-actions"><span class="date-label" id="today-label"></span><button class="profile-chip" data-view="profil"><span class="avatar" id="avatar-small">É</span><span id="top-user">Visiteur</span></button></div>
+    </header>
+
+    <section class="view active" id="view-accueil">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">4e SCIENTIFIQUE · RÉPUBLIQUE DÉMOCRATIQUE DU CONGO</p>
+          <h1>La classe continue<br><em>après la sonnerie.</em></h1>
+          <p class="hero-intro">Un espace commun pour comprendre les cours, demander un coup de main, progresser ensemble et préparer la suite.</p>
+          <div class="hero-actions"><button class="button button-light" data-view="cours">Ouvrir les cours <span>↗</span></button><button class="text-button" data-view="sos">J'ai besoin d'aide <span>→</span></button></div>
+        </div>
+        <div class="hero-note">
+          <div class="note-top"><span>LE CARNET DE LA CLASSE</span><span>№ 04</span></div>
+          <div class="note-rule"></div>
+          <p class="note-quote">« Comprendre vaut mieux que réciter. »</p>
+          <p class="note-caption">Le savoir se construit à plusieurs : une question posée aujourd'hui peut débloquer toute la classe demain.</p>
+          <div class="note-bottom"><span>SCIENCE 4</span><span>ÉDITION COLLECTIVE</span></div>
+        </div>
+      </div>
+
+      <div class="section-heading"><div><p class="eyebrow">TON ESPACE, EN UN COUP D'ŒIL</p><h2>On reprend où ?</h2></div><span class="section-aside">ACCÈS RAPIDES / 01—04</span></div>
+      <div class="quick-grid">
+        <button class="quick-card" data-view="cours"><span class="card-number">01 / RESSOURCES</span><strong>Les cours de la classe</strong><span>Retrouver les chapitres, fiches et documents déposés.</span><b>Explorer <i>↗</i></b></button>
+        <button class="quick-card accent-card" data-view="sos"><span class="card-number">02 / COUP DE MAIN</span><strong>Une question bloque ?</strong><span>Expose ton exercice. Un camarade ou un professeur peut répondre.</span><b>Ouvrir SOS <i>↗</i></b></button>
+        <button class="quick-card" data-view="exetat"><span class="card-number">03 / OBJECTIF EXAMEN</span><strong>Préparer l'EXETAT</strong><span>S'entraîner, consulter les ressources et suivre les informations.</span><b>Se préparer <i>↗</i></b></button>
+        <button class="quick-card" data-view="devoirs"><span class="card-number">04 / TRAVAIL</span><strong>Devoirs & travaux</strong><span>Voir les consignes, les échéances et les corrections.</span><b>Voir les travaux <i>↗</i></b></button>
+      </div>
+
+      <div class="lower-grid">
+        <section class="panel activity-panel"><div class="panel-heading"><div><p class="eyebrow">TABLEAU DE BORD</p><h3>À suivre cette semaine</h3></div><span class="live-tag">ESPACE CLASSE</span></div><div id="weekly-list" class="empty-state compact"><strong>Le tableau de la classe est prêt.</strong><span>Les devoirs et dates seront affichés ici dès leur publication.</span></div></section>
+        <section class="panel quote-panel"><p class="eyebrow">NOTE DE MÉTHODE</p><h3>Une petite avancée vaut mieux qu'une révision remise à demain.</h3><p>Choisis un chapitre. Travaille vingt minutes. Note ce que tu n'as pas compris. Puis demande de l'aide.</p><button class="text-button" data-view="defis">Commencer un défi <span>→</span></button></section>
+      </div>
+      <footer class="page-footer"><span>SCIENCE 4 — LE CAMPUS DE LA 4e SCIENTIFIQUE</span><span>APPRENDRE · PARTAGER · AVANCER</span></footer>
+    </section>
+
+    <section class="view" id="view-cours">
+      <div class="page-intro"><p class="eyebrow">ARCHIVES PÉDAGOGIQUES</p><h1>Les cours de la classe.</h1><p>Les documents publiés par l'équipe pédagogique seront classés ici. Tu pourras les lire, les rechercher et les conserver pour travailler hors connexion.</p></div>
+      <div class="toolbar"><label class="search-box"><span>⌕</span><input id="course-search" type="search" placeholder="Rechercher un cours, un chapitre…"></label><select id="subject-filter" aria-label="Filtrer par matière"><option value="">Toutes les matières</option><option>Mathématiques</option><option>Physique</option><option>Chimie</option><option>Biologie</option><option>Informatique</option><option>Français</option><option>Anglais</option><option>Histoire</option><option>Géographie</option><option>ECM</option></select></div>
+      <div class="subject-grid" id="subject-grid"></div>
+      <div class="section-heading small-heading"><div><p class="eyebrow">DOCUMENTS DISPONIBLES</p><h2>La bibliothèque</h2></div><span class="section-aside" id="course-count">0 DOCUMENT</span></div>
+      <div id="course-list" class="resource-list"><div class="empty-state"><strong>La bibliothèque attend ses premiers cahiers.</strong><span>Les cours seront ajoutés à partir des scans et PDF fournis par l'administrateur de la classe.</span></div></div>
+    </section>
+
+    <section class="view" id="view-exetat">
+      <div class="page-intro"><p class="eyebrow">CAP SUR LA CERTIFICATION</p><h1>Préparer l'EXETAT.</h1><p>Un espace de préparation construit autour des épreuves, de l'entraînement et des informations officielles. Les documents doivent être vérifiés avant publication.</p></div>
+      <div class="exam-feature"><div><span class="card-number">PARCOURS CANDIDAT / 2026—2027</span><h2>La régularité<br>fait la différence.</h2><p>Travaille matière par matière. Reviens sur tes erreurs. Entraîne-toi dans des conditions proches de l'examen.</p><button class="button button-light" data-view="defis">Faire un exercice <span>↗</span></button></div><div class="exam-stamp"><span>EXAMEN</span><strong>D'ÉTAT</strong><small>RDC</small></div></div>
+      <div class="three-grid"><article class="panel"><p class="eyebrow">01 / ARCHIVES</p><h3>Anciennes épreuves</h3><p>Les sujets classés par année, option et matière apparaîtront ici après vérification de leur provenance et des droits de réutilisation.</p><span class="muted-note">En attente de documents vérifiés</span></article><article class="panel"><p class="eyebrow">02 / ENTRAÎNEMENT</p><h3>Examens blancs</h3><p>Des séries chronométrées avec corrigés expliqués seront proposées à partir de questions validées.</p><button class="inline-action" data-view="defis">Voir les défis →</button></article><article class="panel"><p class="eyebrow">03 / INFORMATIONS</p><h3>Dates & consignes</h3><p>Les annonces officielles seront accompagnées de leur source et de leur date de vérification.</p><a class="inline-action" href="https://www.edu-nc.gouv.cd/" target="_blank" rel="noopener">Site du ministère ↗</a></article></div>
+      <div class="section-heading small-heading"><div><p class="eyebrow">SOURCES À CONSULTER</p><h2>Informations officielles</h2></div></div><div class="source-list"><a href="https://www.edu-nc.gouv.cd/" target="_blank" rel="noopener"><span>MINISTÈRE DE L'ÉDUCATION NATIONALE</span><b>edu-nc.gouv.cd ↗</b></a><a href="https://www.edu-nc.gouv.cd/exetat" target="_blank" rel="noopener"><span>ESPACE EXETAT</span><b>Consulter ↗</b></a><a href="https://www.edu-nc.gouv.cd/epreuves-certificatives" target="_blank" rel="noopener"><span>ÉPREUVES CERTIFICATIVES</span><b>Consulter ↗</b></a></div>
+    </section>
+
+    <section class="view" id="view-sos">
+      <div class="page-intro"><p class="eyebrow">ENTRAIDE ENTRE CAMARADES</p><h1>Personne ne reste bloqué seul.</h1><p>Décris précisément l'étape qui te pose problème. La classe peut proposer une piste, une méthode ou une explication.</p></div>
+      <div class="sos-layout"><form class="panel sos-form" id="sos-form"><p class="eyebrow">NOUVELLE DEMANDE</p><h2>Où bloques-tu ?</h2><label>Matière<select id="sos-subject" required><option value="">Choisir une matière</option><option>Mathématiques</option><option>Physique</option><option>Chimie</option><option>Biologie</option><option>Informatique</option><option>Autre</option></select></label><label>Chapitre ou sujet<input id="sos-topic" required placeholder="Ex. : équations du second degré"></label><label>Explique le blocage<textarea id="sos-message" rows="5" required placeholder="J'ai compris le début, mais je ne sais pas comment…"></textarea></label><label>Photo de l'exercice <span class="optional">(facultatif)</span><input id="sos-image" type="file" accept="image/*"></label><button class="button button-dark" type="submit">Publier ma demande <span>↗</span></button><p class="form-note">Aperçu local pour le moment. La publication partagée sera activée après connexion à Supabase.</p></form><div class="sos-feed"><div class="panel-heading"><div><p class="eyebrow">LE MUR D'ENTRAIDE</p><h3>Demandes récentes</h3></div><span class="live-tag">CLASSE</span></div><div id="sos-list" class="empty-state"><strong>Le mur est prêt à accueillir les questions.</strong><span>Les demandes partagées apparaîtront ici une fois le service de discussion connecté.</span></div></div></div>
+    </section>
+
+    <section class="view" id="view-devoirs">
+      <div class="page-intro"><p class="eyebrow">TRAVAUX SCOLAIRES</p><h1>Le travail à rendre.</h1><p>Retrouve les consignes, les documents joints et les dates limites publiés par les professeurs.</p></div>
+      <div class="filter-row"><span class="filter-label">AFFICHAGE</span><button class="filter-pill active">Tous</button><button class="filter-pill">À faire</button><button class="filter-pill">Terminés</button></div>
+      <div class="empty-state large-empty"><strong>Aucun devoir publié pour le moment.</strong><span>Lorsqu'un professeur ajoutera un travail, les consignes et l'échéance apparaîtront dans cet espace.</span></div>
+    </section>
+
+    <section class="view" id="view-discussions">
+      <div class="page-intro"><p class="eyebrow">LA SALLE COMMUNE</p><h1>La conversation continue.</h1><p>Un espace de discussion réservé aux membres de la classe, avec des salons par matière et une modération adaptée.</p></div>
+      <div class="discussion-layout"><div class="panel channel-list"><p class="eyebrow">SALONS</p><button class="channel active">Général <span>01</span></button><button class="channel">Mathématiques <span>02</span></button><button class="channel">Physique <span>03</span></button><button class="channel">Chimie <span>04</span></button><button class="channel">Biologie <span>05</span></button><button class="channel">Informatique <span>06</span></button><button class="channel">EXETAT <span>07</span></button></div><div class="panel chat-placeholder"><div><span class="chat-symbol">S4 / CHAT</span><h2>Un espace à construire ensemble.</h2><p>Les messages partagés et les notifications en direct seront activés après configuration de Supabase. Aucun faux message n'est affiché.</p><span class="muted-note">CONNEXION PARTAGÉE NON CONFIGURÉE</span></div></div></div>
+    </section>
+
+    <section class="view" id="view-defis">
+      <div class="page-intro"><p class="eyebrow">ENTRAÎNEMENT COURT</p><h1>Le défi du jour.</h1><p>Quelques minutes pour tester ton raisonnement. Les séries pourront être enrichies par les professeurs.</p></div>
+      <div class="challenge-layout"><div class="challenge-card"><span class="card-number">SÉRIE 001 / MATHÉMATIQUES</span><span class="challenge-level">RAISONNEMENT</span><h2>Une fonction affine passe par les points A(1 ; 3) et B(3 ; 7). Quelle est son expression ?</h2><div class="answer-list" id="answer-list"><button data-answer="a">f(x) = 2x + 1</button><button data-answer="b">f(x) = 3x + 1</button><button data-answer="c">f(x) = 2x - 1</button><button data-answer="d">f(x) = x + 2</button></div><p id="challenge-feedback" class="feedback" aria-live="polite">Choisis une réponse pour vérifier ton raisonnement.</p></div><aside class="panel challenge-aside"><p class="eyebrow">MÉTHODE</p><h3>Ne cherche pas à deviner.</h3><p>Calcule d'abord le coefficient directeur, puis remplace les coordonnées d'un point pour trouver l'ordonnée à l'origine.</p><span class="muted-note">Une correction expliquée accompagne chaque défi.</span></aside></div>
+    </section>
+
+    <section class="view" id="view-orientation">
+      <div class="page-intro"><p class="eyebrow">APRÈS LA 4e</p><h1>La suite se prépare maintenant.</h1><p>Découvrir les domaines d'études, comprendre les filières et commencer à construire un projet d'avenir.</p></div>
+      <div class="career-grid"><article class="career-card"><span>01 / NUMÉRIQUE</span><h2>Informatique & systèmes</h2><p>Développement logiciel, réseaux, cybersécurité, données et intelligence artificielle.</p></article><article class="career-card"><span>02 / INGÉNIERIE</span><h2>Construire & concevoir</h2><p>Génie civil, électrique, mécanique, énergétique et industriel.</p></article><article class="career-card"><span>03 / SCIENCES</span><h2>Comprendre le vivant</h2><p>Biologie, chimie, environnement, laboratoire et recherche.</p></article><article class="career-card"><span>04 / SANTÉ</span><h2>Sciences de la santé</h2><p>Découvrir les parcours, les prérequis et les responsabilités des métiers de santé.</p></article></div><p class="disclaimer">Les conditions d'admission et les programmes varient selon les établissements. Vérifier les informations auprès des institutions concernées.</p>
+    </section>
+
+    <section class="view" id="view-actualites">
+      <div class="page-intro"><p class="eyebrow">ÉDUCATION EN RDC</p><h1>Suivre les informations fiables.</h1><p>Les annonces importantes doivent toujours renvoyer à leur source originale. Cette rubrique ne publie pas de calendrier non confirmé.</p></div>
+      <div class="news-feature"><div><span class="card-number">SOURCE INSTITUTIONNELLE</span><h2>Ministère de l'Éducation nationale et Nouvelle Citoyenneté</h2><p>Consulte les communications officielles relatives à l'année scolaire, aux épreuves certificatives et à l'Examen d'État.</p><a class="button button-light" href="https://www.edu-nc.gouv.cd/" target="_blank" rel="noopener">Accéder au site officiel ↗</a></div><div class="news-index">RDC<br><strong>EDU</strong><br>INFO</div></div>
+      <div class="section-heading small-heading"><div><p class="eyebrow">LIENS DIRECTS</p><h2>Sources à suivre</h2></div></div><div class="source-list"><a href="https://www.edu-nc.gouv.cd/exetat" target="_blank" rel="noopener"><span>EXAMEN D'ÉTAT</span><b>Consulter ↗</b></a><a href="https://www.edu-nc.gouv.cd/epreuves-certificatives" target="_blank" rel="noopener"><span>ÉPREUVES CERTIFICATIVES</span><b>Consulter ↗</b></a></div>
+    </section>
+
+    <section class="view" id="view-profil">
+      <div class="page-intro"><p class="eyebrow">IDENTITÉ SCOLAIRE</p><h1>Ton espace personnel.</h1><p>Renseigne ton identité de classe pour personnaliser cet aperçu. L'activation des comptes partagés et des rôles nécessitera la configuration du backend.</p></div>
+      <div class="profile-layout"><form class="panel profile-form" id="profile-form"><p class="eyebrow">PROFIL DE CLASSE</p><label>Nom<input id="profile-last" required placeholder="Ton nom"></label><label>Post-nom<input id="profile-middle" required placeholder="Ton post-nom"></label><label>Prénom<input id="profile-first" required placeholder="Ton prénom"></label><label>Je suis<select id="profile-role"><option value="Élève">Élève</option><option value="Professeur — à valider">Professeur — à valider</option></select></label><button class="button button-dark" type="submit">Enregistrer sur cet appareil</button><p class="form-note">Cette version enregistre le profil uniquement sur cet appareil. La validation des professeurs et la synchronisation seront branchées à Supabase ensuite.</p></form><div class="panel profile-card"><span class="avatar large-avatar" id="profile-avatar">É</span><p class="eyebrow">MEMBRE DE SCIENCE 4</p><h2 id="profile-name">Visiteur</h2><p id="profile-role-label">Aucun profil enregistré</p><span class="muted-note">4e SCIENTIFIQUE · RDC</span></div></div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
