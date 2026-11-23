@@ -43,6 +43,23 @@ create table if not exists public.class_announcements (
  published_at timestamptz not null default now(), created_by uuid references public.class_profiles(id)
 );
 
+
+-- Le nom affiché est toujours relu depuis le profil lié au compte.
+create or replace function public.science4_set_message_identity()
+returns trigger language plpgsql security invoker set search_path = public as $
+begin
+  new.user_id := (select auth.uid());
+  new.display_name := (select display_name from public.class_profiles where id=(select auth.uid()));
+  return new;
+end;
+$;
+drop trigger if exists science4_message_identity on public.class_messages;
+create trigger science4_message_identity before insert on public.class_messages
+for each row execute function public.science4_set_message_identity();
+drop trigger if exists science4_sos_identity on public.sos_requests;
+create trigger science4_sos_identity before insert on public.sos_requests
+for each row execute function public.science4_set_message_identity();
+
 alter table public.class_profiles enable row level security;
 alter table public.class_messages enable row level security;
 alter table public.sos_requests enable row level security;
@@ -100,7 +117,7 @@ grant select,insert on public.exam_practice_questions to authenticated;
 grant select,insert on public.class_announcements to authenticated;
 
 insert into storage.buckets (id,name,public,file_size_limit,allowed_mime_types)
-values ('science4-documents','science4-documents',true,52428800,array['application/pdf','image/jpeg','image/png','image/webp'])
+values ('science4-documents','science4-documents',false,52428800,array['application/pdf','image/jpeg','image/png','image/webp'])
 on conflict (id) do nothing;
 drop policy if exists "class reads published files" on storage.objects;
 create policy "class reads published files" on storage.objects for select to authenticated using (bucket_id='science4-documents');
