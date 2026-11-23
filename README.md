@@ -58,8 +58,8 @@ Ne jamais rendre le rôle professeur automatique à partir du seul caractère `@
 
 ## Comptes et sécurité
 
-- Les élèves peuvent enregistrer leur nom, post-nom et prénom sans adresse e-mail.
-- Un nom commençant par `@` peut signaler une demande d'accès professeur, mais ne donne pas automatiquement les droits.
+- Les élèves enregistrent uniquement leur nom, post-nom et prénom, sans adresse e-mail ni mot de passe. Un `@` au début de l’un des champs demande un accès professeur, qui reste soumis à validation.
+- Un `@` au début de l’un des trois champs de nom signale une demande d’accès professeur, mais ne donne pas automatiquement les droits.
 - L'administration doit valider un enseignant en attribuant le rôle `teacher` et le statut `approved` dans `class_profiles`.
 - Les politiques RLS limitent les publications pédagogiques aux enseignants approuvés.
 - Les comptes anonymes sont pratiques pour démarrer, mais ne sont pas récupérables après effacement des données locales. Prévoir un moyen de rattacher un compte durable avant un usage à grande échelle.
