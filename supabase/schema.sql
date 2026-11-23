@@ -168,3 +168,10 @@ do $$ begin
    alter publication supabase_realtime add table public.sos_replies;
  end if;
 end $$;
+
+-- Les annonces de classe sont aussi diffusées en temps réel.
+do $$ begin
+ if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='class_announcements') then
+   alter publication supabase_realtime add table public.class_announcements;
+ end if;
+end $$;
