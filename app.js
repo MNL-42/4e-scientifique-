@@ -2,7 +2,7 @@ const $=(s,r=document)=>r.querySelector(s);const $$=(s,r=document)=>[...r.queryS
 const views=["accueil","cours","exetat","sos","devoirs","discussions","defis","orientation","actualites","profil","professeur"];
 const labels={accueil:"VUE GÉNÉRALE",cours:"LES COURS",exetat:"PRÉPARATION EXETAT",sos:"ENTRAIDE SOS",devoirs:"DEVOIRS & TRAVAUX",discussions:"LA SALLE COMMUNE",defis:"DÉFIS SCIENTIFIQUES",orientation:"APRÈS LE SECONDAIRE",actualites:"ACTUALITÉS RDC",profil:"MON ESPACE",professeur:"ESPACE PROFESSEUR"};
 const toast=(message)=>{const el=$("#toast");el.textContent=message;el.classList.add("show");clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.remove("show"),2600)};
-function showView(name){if(!views.includes(name))return;$$(".view").forEach(v=>v.classList.toggle("active",v.id==="view-"+name));$$(".nav-link[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===name));$("#current-section").textContent=labels[name];$("#sidebar").classList.remove("open");window.scrollTo({top:0,behavior:"smooth"});if(location.hash!=="#"+name)history.replaceState(null,"","#"+name)}
+function showView(name){if(!views.includes(name))return;$$(".view").forEach(v=>v.classList.toggle("active",v.id==="view-"+name));$(".nav-link[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===name));$(".mobile-nav-item").forEach(b=>b.classList.toggle("active",b.dataset.view===name));$("#current-section").textContent=labels[name];$("#sidebar").classList.remove("open");window.scrollTo({top:0,behavior:"smooth"});if(location.hash!=="#"+name)history.replaceState(null,"","#"+name)}
 $$("[data-view]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
 $("#menu-toggle").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
 document.addEventListener("click",e=>{if(window.innerWidth<=760&&!e.target.closest("#sidebar")&&!e.target.closest("#menu-toggle"))$("#sidebar").classList.remove("open")});
@@ -95,3 +95,5 @@ initSharedCampus();
  }
  document.querySelectorAll(".visual-tile img").forEach(img=>{img.loading="lazy";img.decoding="async"});
 })();
+
+(function(){const input=document.getElementById("sos-image");if(!input)return;const preview=document.createElement("div");preview.className="photo-preview";preview.hidden=true;input.insertAdjacentElement("afterend",preview);input.addEventListener("change",()=>{preview.replaceChildren();const file=input.files&&input.files[0];if(!file){preview.hidden=true;return}if(!file.type.startsWith("image/")){preview.hidden=true;return}const image=document.createElement("img");image.alt="Aperçu de la photo jointe";image.src=URL.createObjectURL(file);const label=document.createElement("span");label.textContent=file.name+" · aperçu";preview.append(image,label);preview.hidden=false})})();
