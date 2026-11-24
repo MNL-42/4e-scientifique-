@@ -1,7 +1,7 @@
-const CACHE = "science4-v9";
+const CACHE = "science4-v10";
 const CORE = [
   "./", "./index.html", "./offline.html", "./styles.css", "./app.js",
-  "./manifest.webmanifest", "./supabase-config.js",
+  "./manifest.webmanifest", "./supabase-config.js", "./nacre-campus.js",
   "./assets/science4-icon.svg", "./assets/science4-icon-192.svg",
   "./assets/science4-icon-512.svg", "./assets/cours-illustration.svg",
   "./assets/exetat-illustration.svg", "./assets/entraide-illustration.svg"
