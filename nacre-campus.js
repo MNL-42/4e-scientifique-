@@ -61,7 +61,7 @@
 
   async function loadCourses(){
     const root=$("#course-list");if(!root)return;
-    const {data:rows,error}=await supa.from("courses").select("id,subject_id,title,description,created_at").eq("status","publie").order("created_at",{ascending:false}).limit(100);
+    const {data:rows,error}=await supa.from("courses").select("id,subject_id,title,description,course_month,created_at").eq("status","publie").order("course_month",{ascending:false}).order("created_at",{ascending:false}).limit(150);
     if(error){console.warn("Cours:",error);return;}
     if(!rows?.length){courses.splice(0);renderCourses();return;}
     const ids=rows.map(x=>x.id);
@@ -73,10 +73,13 @@
       const attached=(docs||[]).filter(d=>d.course_id===row.id);
       for(const doc of attached){
         const {data:link,error:linkError}=await supa.storage.from(doc.bucket).createSignedUrl(doc.storage_path,3600);
-        items.push({title:row.title,subject,chapter:row.description||"Support pédagogique",url:linkError?"#":link.signedUrl});
+        items.push({title:row.title,subject,chapter:row.description||"Support pédagogique",month:row.course_month||row.created_at.slice(0,7)+"-01",url:linkError?"#":link.signedUrl});
       }
     }
-    courses.splice(0,courses.length,...items);renderCourses();
+    courses.splice(0,courses.length,...items);
+    const monthSelect=$("#course-month-filter");
+    if(monthSelect){const previous=monthSelect.value;const months=[...new Set(items.map(x=>x.month?.slice(0,7)).filter(Boolean))].sort().reverse();monthSelect.innerHTML='<option value="">Tous les mois</option>'+months.map(m=>'<option value="'+m+'">'+new Date(m+"-15T12:00:00").toLocaleDateString("fr-FR",{month:"long",year:"numeric"})+'</option>').join("");if(months.includes(previous))monthSelect.value=previous;}
+    renderCourses();
   }
 
   async function loadAssignments(){
@@ -183,32 +186,95 @@
     }
   }
 
-  async function loadNews(){
+  let activeNewsFilter="tout";
+  const newsCacheKey="science4_exetat_news_v1";
+  const newsTtl=30*60*1000;
+  let liveExamNews=[];
+  function classifyExamNews(text){
+    const t=String(text||"").toLowerCase();
+    if(/dipl[oô]me|diplomas|e-dipl[oô]me|palmar[eè]s/.test(t))return "diplomes";
+    if(/calendrier|date limite|inscription|pr[eé]liminaire|dissertation|hors.session|session ordinaire/.test(t))return "calendrier";
+    if(/r[eé]sultat|d[eé]lib[eé]ration|correction|candidat|centre de passation/.test(t))return "exetat";
+    if(/ex[eé]tat|examen d.?[eé]tat|examen d.?etat/.test(t))return "exetat";
+    return "autre";
+  }
+  function newsDate(value){const d=new Date(value);return Number.isNaN(d.getTime())?"Date non précisée":d.toLocaleDateString("fr-FR",{day:"2-digit",month:"long",year:"numeric"});}
+  async function fetchLiveExamNews(force=false){
+    try{
+      const cached=JSON.parse(localStorage.getItem(newsCacheKey)||"null");
+      if(cached?.items?.length){liveExamNews=cached.items;}
+      if(!force&&cached?.items?.length&&Date.now()-cached.time<newsTtl)return;
+      const query='EXETAT OR "Examen d’État" OR "diplôme d’État" RDC';
+      const rss="https://news.google.com/rss/search?q="+encodeURIComponent(query)+"&hl=fr&gl=CD&ceid=CD:fr";
+      const endpoint="https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(rss);
+      const response=await fetch(endpoint,{cache:"no-store"});
+      if(!response.ok)throw new Error("Flux d’actualités indisponible");
+      const data=await response.json();
+      if(data.status!=="ok"||!Array.isArray(data.items))throw new Error("Flux sans résultats");
+      const seen=new Set();
+      liveExamNews=data.items.map(item=>{
+        const title=String(item.title||"").replace(/\\s+-\\s+[^-]+$/,"").trim();
+        const summary=String(item.description||"").replace(/<[^>]*>/g," ").replace(/&nbsp;/g," ").replace(/\\s+/g," ").trim().slice(0,320);
+        const url=item.link||"";
+        if(!title||!url||seen.has(url))return null;seen.add(url);
+        const category=classifyExamNews(title+" "+summary);
+        if(category==="autre"&&!/ex[eé]tat|examen d.?[eé]tat|dipl[oô]me d.?[eé]tat/i.test(title+" "+summary))return null;
+        let image=item.thumbnail||item.enclosure?.link||"";
+        const host=(()=>{try{return new URL(url).hostname.replace(/^www\\./,"")}catch{return "Presse"}})();
+        return {category,title,summary,source_name:item.author||host,source_url:url,published_on:item.pubDate||new Date().toISOString(),is_official:/edu-nc\\.gouv\\.cd|minepst\\.gouv\\.cd/.test(host),image_url:image,_type:"live"};
+      }).filter(Boolean).slice(0,30);
+      localStorage.setItem(newsCacheKey,JSON.stringify({time:Date.now(),items:liveExamNews}));
+      $("#news-feed-status").textContent="Flux actualisé · "+new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})+" · sources externes à vérifier";
+    }catch(error){
+      console.warn("Flux EXETAT:",error);
+      $("#news-feed-status").textContent=liveExamNews.length?"Flux en cache · connexion au fil en attente":"Fil institutionnel enregistré · flux en direct temporairement indisponible";
+    }
+  }
+  function renderExamNews(items){
+    const root=$("#news-feed");if(!root)return;
+    const filter=activeNewsFilter;
+    const filtered=items.filter(item=>{
+      const d=new Date(item.published_on||item._date||0);
+      if(filter==="archives")return d.getFullYear()<2026;
+      if(filter==="tout")return true;
+      if(filter==="diplomes")return item.category==="diplomes"||item.category==="diplome";
+      if(filter==="calendrier")return item.category==="calendrier";
+      if(filter==="exetat")return ["exetat","examen"].includes(item.category);
+      return false;
+    }).sort((a,b)=>new Date(b.published_on||b._date||0)-new Date(a.published_on||a._date||0));
+    root.replaceChildren();
+    if(!filtered.length){root.innerHTML='<div class="empty-state"><strong>Aucune publication dans cette catégorie.</strong><span>Actualise le fil ou consulte les communiqués du ministère.</span></div>';return;}
+    filtered.forEach((item,index)=>{
+      const card=document.createElement("article");card.className=index===0?"news-feed-card news-feed-featured":"news-feed-card";
+      const image=document.createElement("img");image.className="news-feed-image";image.loading="lazy";image.src=item.image_url||"https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80";image.alt="Illustration d’actualité scolaire";image.onerror=()=>{image.src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80";};
+      const body=document.createElement("div");body.className="news-feed-content";
+      const meta=document.createElement("div");meta.className="news-feed-meta";
+      const tag=document.createElement("span");tag.className="news-category";tag.textContent=item.is_official?"SOURCE OFFICIELLE":item._type==="live"?"FIL D’ACTUALITÉ":"ARCHIVE MINISTÉRIELLE";
+      const date=document.createElement("time");date.textContent=newsDate(item.published_on||item._date);
+      meta.append(tag,date);
+      const title=document.createElement("h3");title.textContent=item.title;
+      const summary=document.createElement("p");summary.textContent=item.summary||item.body||"Consulte la publication originale pour les détails.";
+      body.append(meta,title,summary);
+      const footer=document.createElement("div");footer.className="news-feed-footer";
+      const source=document.createElement("span");source.textContent=item.source_name||"MINEDU-NC";
+      const link=document.createElement("a");link.href=item.source_url||"#";link.target="_blank";link.rel="noopener";link.textContent="Lire la suite ↗";
+      footer.append(source,link);body.append(footer);
+      card.append(image,body);root.append(card);
+    });
+  }
+  async function loadNews(force=false){
     const root=$("#news-feed");if(!root)return;
     const [newsRes,annRes]=await Promise.all([
-      supa.from("news_items").select("category,title,summary,source_name,source_url,published_on,last_verified_on,is_official").eq("status","publie").order("published_on",{ascending:false}).limit(20),
+      supa.from("news_items").select("category,title,summary,source_name,source_url,published_on,last_verified_on,is_official,image_url").eq("status","publie").order("published_on",{ascending:false}).limit(50),
       supa.from("announcements").select("title,body,importance,pinned,published_at,expires_at").order("published_at",{ascending:false}).limit(20)
     ]);
-    root.replaceChildren();
-    const news=(newsRes.data||[]).map(n=>({...n,_type:"news",_date:n.published_on}));
-    const ann=(annRes.data||[]).filter(a=>!a.expires_at||new Date(a.expires_at)>new Date()).map(a=>({...a,_type:"announcement",_date:a.published_at}));
-    if(newsRes.error)console.warn("Actualités:",newsRes.error);
-    if(annRes.error)console.warn("Annonces:",annRes.error);
-    const all=[...ann,...news].sort((a,b)=>new Date(b._date)-new Date(a._date));
-    if(!all.length){root.innerHTML='<div class="empty-state"><strong>Aucune nouvelle publication dans NACRE.</strong><span>Les actualités validées et les annonces de classe apparaîtront ici dès leur enregistrement.</span></div>';return;}
-    all.forEach(item=>{
-      const card=document.createElement("article");card.className="panel official-news-card";
-      const eyebrow=document.createElement("p");eyebrow.className="eyebrow";eyebrow.textContent=item._type==="announcement"?(item.pinned?"ANNONCE ÉPINGLÉE":"ANNONCE DE CLASSE"):(item.is_official?"SOURCE OFFICIELLE":"ACTUALITÉ");
-      const title=document.createElement("h3");title.textContent=item.title;
-      const body=document.createElement("p");body.textContent=item._type==="announcement"?item.body:item.summary;
-      const date=document.createElement("time");date.textContent=new Date(item._date).toLocaleDateString("fr-FR");
-      card.append(eyebrow,title,body,date);
-      if(item._type==="news"){
-        const source=document.createElement("small");source.textContent="Source : "+item.source_name+(item.last_verified_on?" · Vérifié le "+new Date(item.last_verified_on).toLocaleDateString("fr-FR"):"");card.append(source);
-      }
-      if(item.source_url){const a=document.createElement("a");a.className="inline-action";a.href=item.source_url;a.target="_blank";a.rel="noopener";a.textContent="Consulter la source ↗";card.append(a);}
-      root.append(card);
-    });
+    if(newsRes.error)console.warn("Actualités NACRE:",newsRes.error);
+    if(annRes.error)console.warn("Annonces NACRE:",annRes.error);
+    const official=(newsRes.data||[]).map(n=>({...n,_date:n.published_on}));
+    const live=liveExamNews.map(n=>({...n}));
+    const announcements=(annRes.data||[]).filter(a=>!a.expires_at||new Date(a.expires_at)>new Date()).map(a=>({...a,category:"classe",source_name:"SCIENCE 4 · Institut de la Gombe 2",published_on:a.published_at,summary:a.body,source_url:null,is_official:false}));
+    renderExamNews([...official,...live,...announcements]);
+    if(force)$("#news-feed-status").textContent="Actualisation du fil en cours…";
   }
 
   async function publishAssignment(form){
@@ -227,11 +293,13 @@
   async function publishCourse(form){
     if(!staff()){say("Dépôt réservé aux professeurs validés.");return;}
     const file=$("#resource-file").files[0];
+    const month=$("#resource-month").value;
+    if(!month){say("Choisis le mois du cours.");return;}
     if(!file||file.type!=="application/pdf"){say("Choisis un fichier PDF valide.");return;}
     if(file.size>25*1024*1024){say("Le PDF doit faire moins de 25 Mo.");return;}
     const {data:course,error}=await supa.from("courses").insert({
       subject_id:$("#resource-subject").value,title:$("#resource-title").value.trim(),
-      description:$("#resource-chapter").value.trim()||null,kind:"cours",status:"publie"
+      description:$("#resource-chapter").value.trim()||null,course_month:month+"-01",kind:"cours",status:"publie"
     }).select("id").single();
     if(error){console.error(error);say("Impossible de créer le cours.");return;}
     const safe=file.name.normalize("NFKD").replace(/[^a-zA-Z0-9._-]/g,"-");
@@ -288,7 +356,7 @@
       if(!currentUser)throw new Error("Session anonyme absente");
       const registered=await getContext();
       await loadSubjects();
-      if(registered){await Promise.all([loadCourses(),loadAssignments(),loadNews()]);if(staff())await loadTeacherSubmissions();}
+      if(registered){await Promise.all([loadCourses(),loadAssignments(),fetchLiveExamNews(false),loadNews()]);if(staff())await loadTeacherSubmissions();}
       supa.channel("science4-nacre-updates")
         .on("postgres_changes",{event:"*",schema:"public",table:"assignments"},()=>loadAssignments())
         .on("postgres_changes",{event:"*",schema:"public",table:"assignment_submissions"},()=>{loadAssignments();if(staff())loadTeacherSubmissions();})
@@ -319,10 +387,14 @@
     if(error){console.error(error);say("Inscription impossible. Vérifie les informations et le code.");return;}
     if(!data?.ok){const messages={CODE_INVALIDE:"Code invalide ou expiré.",NOM_EXISTANT:"Ce nom est déjà enregistré.",NOM_INVALIDE:"Vérifie les noms saisis.",DEJA_INSCRIT:"Ce téléphone possède déjà un profil."};say(messages[data?.error]||"Inscription refusée.");return;}
     await getContext();
-    await Promise.all([loadSubjects(),loadCourses(),loadAssignments(),loadNews()]);
+    await Promise.all([loadSubjects(),loadCourses(),loadAssignments(),fetchLiveExamNews(false),loadNews()]);
     say(data.role==="admin"?"Compte administrateur activé.":"Inscription terminée. Bienvenue dans SCIENCE 4.");
   },true);
 
+  $("#news-filters")?.addEventListener("click",e=>{const b=e.target.closest("[data-filter]");if(!b)return;activeNewsFilter=b.dataset.filter;$("#news-filters").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));loadNews();});
+  $("#news-refresh")?.addEventListener("click",async()=>{await fetchLiveExamNews(true);await loadNews();});
+  setInterval(async()=>{if(document.hidden||!navigator.onLine)return;await fetchLiveExamNews(true);await loadNews();},30*60*1000);
+  const monthInput=$("#resource-month");if(monthInput)monthInput.value=new Date().toISOString().slice(0,7);
   $("#profile-kind")?.addEventListener("change",e=>{
     const teacher=e.target.value==="professeur";
     $("#teacher-code-wrap").hidden=!teacher;
