@@ -196,3 +196,30 @@ html[data-theme="dark"] .mobile-nav{background:rgba(16,36,42,.98)}
 html[data-theme="dark"] .mobile-nav-item.active{color:var(--accent)}
 html[data-theme="dark"] .install-banner small{color:var(--muted)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+
+/* SCIENCE 4 — espace de copies, actualités et navigation */
+.news-feed{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0 28px}
+.news-feed .official-news-card{margin:0;min-width:0}
+.news-feed time{display:block;color:var(--muted);font-size:10px;margin-top:12px}
+.news-feed small{display:block;color:var(--muted);font-size:10px;line-height:1.5;margin-top:8px}
+.news-hero-image{width:100%;height:100%;min-height:190px;max-height:270px;object-fit:cover;border-radius:16px}
+.student-submission-form,.teacher-feedback-form{display:grid;gap:12px;margin-top:18px;padding:16px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px}
+.student-submission-form label,.teacher-feedback-form label,.admin-invite-panel label{display:grid;gap:7px;font-size:11px;font-weight:700}
+.student-submission-form textarea,.student-submission-form select,.student-submission-form input,.teacher-feedback-form textarea,.admin-invite-panel input{width:100%;font-size:12px;font-weight:400}
+.submission-own,.public-submissions{margin-top:15px;padding:14px;border-left:3px solid var(--accent-strong);background:var(--surface-2);border-radius:8px}
+.submission-own strong,.public-submissions strong{font-size:12px;color:var(--deep)}
+.submission-own p,.public-submissions p{font-size:12px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.teacher-submissions-panel,.admin-invite-panel{margin-top:16px}
+.teacher-submissions{display:grid;gap:12px;margin-top:15px}
+.submission-teacher-card{padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--white)}
+.submission-teacher-card h4{font:700 16px var(--display);margin:7px 0}
+.submission-teacher-card>p:not(.eyebrow){font-size:12px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
+.submission-teacher-card>a{display:inline-block;margin:8px 10px 0 0;font-size:11px;color:var(--deep);text-decoration:underline}
+.admin-invite-panel form{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:600px;margin-top:14px}
+.admin-invite-panel form button{grid-column:1/-1}
+.invite-result{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:16px;padding:14px;background:var(--surface-2);border-radius:10px}
+.invite-result code{font-size:16px;letter-spacing:.12em;font-weight:800;color:var(--deep);overflow-wrap:anywhere}
+.invite-result button,.teacher-feedback-form button{border:0;background:var(--deep);color:white;padding:10px 14px;border-radius:8px;font-size:11px;font-weight:700}
+#teacher-code-wrap[hidden],#admin-invite-panel[hidden],#teacher-submissions-panel[hidden],.teacher-grid form[hidden],#profile-form[hidden]{display:none!important}
+@media(max-width:760px){.news-feed{grid-template-columns:1fr}.news-hero-image{min-height:160px}.admin-invite-panel form{grid-template-columns:1fr}.admin-invite-panel form button{grid-column:auto}}
