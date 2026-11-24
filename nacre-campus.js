@@ -73,7 +73,7 @@
       const attached=(docs||[]).filter(d=>d.course_id===row.id);
       for(const doc of attached){
         const {data:link,error:linkError}=await supa.storage.from(doc.bucket).createSignedUrl(doc.storage_path,3600);
-        items.push({title:row.title,subject,chapter:row.description||"Support pédagogique",month:row.course_month||row.created_at.slice(0,7)+"-01",url:linkError?"#":link.signedUrl});
+        items.push({title:row.title,subject,chapter:row.description||"Support pédagogique",month:(row.course_month||row.created_at.slice(0,10)).slice(0,7),url:linkError?"#":link.signedUrl});
       }
     }
     courses.splice(0,courses.length,...items);
@@ -356,7 +356,7 @@
       if(!currentUser)throw new Error("Session anonyme absente");
       const registered=await getContext();
       await loadSubjects();
-      if(registered){await Promise.all([loadCourses(),loadAssignments(),fetchLiveExamNews(false),loadNews()]);if(staff())await loadTeacherSubmissions();}
+      if(registered){await Promise.all([loadCourses(),loadAssignments()]);await fetchLiveExamNews(false);await loadNews();if(staff())await loadTeacherSubmissions();}
       supa.channel("science4-nacre-updates")
         .on("postgres_changes",{event:"*",schema:"public",table:"assignments"},()=>loadAssignments())
         .on("postgres_changes",{event:"*",schema:"public",table:"assignment_submissions"},()=>{loadAssignments();if(staff())loadTeacherSubmissions();})
@@ -387,7 +387,7 @@
     if(error){console.error(error);say("Inscription impossible. Vérifie les informations et le code.");return;}
     if(!data?.ok){const messages={CODE_INVALIDE:"Code invalide ou expiré.",NOM_EXISTANT:"Ce nom est déjà enregistré.",NOM_INVALIDE:"Vérifie les noms saisis.",DEJA_INSCRIT:"Ce téléphone possède déjà un profil."};say(messages[data?.error]||"Inscription refusée.");return;}
     await getContext();
-    await Promise.all([loadSubjects(),loadCourses(),loadAssignments(),fetchLiveExamNews(false),loadNews()]);
+    await Promise.all([loadSubjects(),loadCourses(),loadAssignments()]);await fetchLiveExamNews(false);await loadNews();
     say(data.role==="admin"?"Compte administrateur activé.":"Inscription terminée. Bienvenue dans SCIENCE 4.");
   },true);
 
