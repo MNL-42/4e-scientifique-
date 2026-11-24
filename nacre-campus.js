@@ -194,7 +194,9 @@
     const t=String(text||"").toLowerCase();
     if(/dipl[oô]me|diplomas|e-dipl[oô]me|palmar[eè]s/.test(t))return "diplomes";
     if(/calendrier|date limite|inscription|pr[eé]liminaire|dissertation|hors.session|session ordinaire/.test(t))return "calendrier";
-    if(/r[eé]sultat|d[eé]lib[eé]ration|correction|candidat|centre de passation/.test(t))return "exetat";
+    if(/r[eé]sultat|d[eé]lib[eé]ration|correction|palmar[eè]s/.test(t))return "resultats";
+    if(/dissertation|oral|pratique professionnelle|[eé]preuve/.test(t))return "epreuves";
+    if(/inscription|inscrit|enr[oô]lement|candidat|centre de passation/.test(t))return "inscriptions";
     if(/ex[eé]tat|examen d.?[eé]tat|examen d.?etat/.test(t))return "exetat";
     return "autre";
   }
@@ -235,11 +237,12 @@
     const filter=activeNewsFilter;
     const filtered=items.filter(item=>{
       const d=new Date(item.published_on||item._date||0);
-      if(filter==="archives")return d.getFullYear()<2026;
+      if(filter==="archives")return d.getFullYear()<new Date().getFullYear()||d.getMonth()<new Date().getMonth()&&d.getFullYear()===new Date().getFullYear();
       if(filter==="tout")return true;
       if(filter==="diplomes")return item.category==="diplomes"||item.category==="diplome";
       if(filter==="calendrier")return item.category==="calendrier";
-      if(filter==="exetat")return ["exetat","examen"].includes(item.category);
+      if(filter==="exetat")return ["exetat","examen","resultats","epreuves","inscriptions"].includes(item.category);
+      if(["resultats","epreuves","inscriptions"].includes(filter))return item.category===filter;
       return false;
     }).sort((a,b)=>new Date(b.published_on||b._date||0)-new Date(a.published_on||a._date||0));
     root.replaceChildren();
