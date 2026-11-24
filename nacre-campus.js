@@ -110,6 +110,8 @@
         const ownTitle=document.createElement("strong");ownTitle.textContent="Ton travail : "+(own.visibility==="public"?"visible par la classe":"privé, visible par toi et le professeur");
         const ownText=document.createElement("p");ownText.textContent=own.answer_text||"Fichier(s) joint(s) envoyé(s).";
         ownBox.append(ownTitle,ownText);card.append(ownBox);
+        const {data:feedbackRows}=await supa.from("submission_comments").select("body,created_at").eq("submission_id",own.id).order("created_at",{ascending:true}).limit(20);
+        if(feedbackRows?.length){const feedbackBox=document.createElement("div");feedbackBox.className="submission-feedback";const fh=document.createElement("strong");fh.textContent="Retours privés";feedbackBox.append(fh);feedbackRows.forEach(note=>{const p=document.createElement("p");p.textContent=note.body;feedbackBox.append(p)});card.append(feedbackBox);}
       }else if(role==="eleve"){
         const form=document.createElement("form");form.className="student-submission-form";form.dataset.assignment=a.id;
         form.innerHTML='<label>Ta réponse<textarea name="answer" rows="4" maxlength="10000" placeholder="Écris ta réponse ou explique ta méthode…"></textarea></label><label>Fichier(s) facultatif(s) <input name="files" type="file" multiple accept=".pdf,image/jpeg,image/png,image/webp"></label><label>Confidentialité<select name="visibility"><option value="private">Privé — seulement moi et le professeur</option><option value="public">Public — partagé avec la classe</option></select></label><p class="form-note">Par défaut, ta copie reste privée. Si tu choisis Public, les autres élèves pourront lire le texte de ta réponse.</p><button class="button button-dark" type="submit">Envoyer au professeur</button>';
@@ -265,7 +267,7 @@
     const body=form.elements.body.value.trim();if(!body)return;
     const {error}=await supa.from("submission_comments").insert({submission_id:form.dataset.submission,body});
     if(error){console.error(error);say("Retour non envoyé.");return;}
-    form.reset();say("Retour privé envoyé à l’élève.");
+    form.reset();say("Retour privé envoyé à l’élève.");await loadTeacherSubmissions();
   }
 
   async function boot(){
@@ -289,6 +291,7 @@
         .on("postgres_changes",{event:"*",schema:"public",table:"assignment_submissions"},()=>{loadAssignments();if(staff())loadTeacherSubmissions();})
         .on("postgres_changes",{event:"*",schema:"public",table:"announcements"},loadNews)
         .on("postgres_changes",{event:"*",schema:"public",table:"news_items"},loadNews)
+        .on("postgres_changes",{event:"*",schema:"public",table:"submission_comments"},()=>loadAssignments())
         .subscribe();
       $("#chat-status").textContent="Connecté à NACRE";
     }catch(error){
