@@ -67,7 +67,7 @@ initSharedCampus();
 
 /* Navigation mobile, thème persistant et progression du défi. */
 (function(){
- const root=document.documentElement,themeKey="science4_theme";
+ const root=document.documentElement,themeKey="science4_theme_v2";
  const saved=localStorage.getItem(themeKey);root.dataset.theme=saved==="dark"?"dark":"light";
  const themeButton=document.getElementById("theme-toggle");
  function syncTheme(){const light=root.dataset.theme!=="dark";themeButton.textContent=light?"◐":"☼";themeButton.setAttribute("aria-label",light?"Activer le thème sombre":"Activer le thème clair");const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=light?"#10242a":"#172329"}
