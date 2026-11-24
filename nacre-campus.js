@@ -38,6 +38,7 @@
       return true;
     }
     profile=null;role=null;
+    $("#profile-name").textContent="Visiteur";$("#top-user").textContent="Visiteur";$("#profile-role-label").textContent="Aucun profil enregistré";$("#avatar-small").textContent="É";$("#profile-avatar").textContent="É";
     $("#profile-form").hidden=false;
     $("#teacher-access-title").textContent=data?.suspended?"Compte suspendu":"Aucun profil de classe";
     $("#teacher-access-text").textContent=data?.suspended?"Ce compte est suspendu. Contacte l’administration de la classe.":"Crée ton profil. Les élèves s’inscrivent directement ; les professeurs doivent utiliser un code d’invitation valide.";
@@ -133,6 +134,8 @@
     const files=[...form.elements.files.files];
     if(!answer&&!files.length){say("Ajoute une réponse ou un fichier avant l’envoi.");return;}
     if(files.length>6){say("Maximum : 6 fichiers par devoir.");return;}
+    const allowedTypes=["application/pdf","image/jpeg","image/png","image/webp"];
+    if(files.some(f=>!allowedTypes.includes(f.type))){say("Formats autorisés : PDF, JPG, PNG et WebP.");return;}
     if(files.some(f=>f.size>10*1024*1024)){say("Chaque fichier doit faire moins de 10 Mo.");return;}
     const uploaded=[];
     for(const file of files){
@@ -293,7 +296,7 @@
         .on("postgres_changes",{event:"*",schema:"public",table:"news_items"},loadNews)
         .on("postgres_changes",{event:"*",schema:"public",table:"submission_comments"},()=>loadAssignments())
         .subscribe();
-      $("#chat-status").textContent="Connecté à NACRE";
+      $("#chat-status").textContent="Campus connecté";
     }catch(error){
       console.error("NACRE:",error);
       $("#teacher-access-title").textContent="Connexion à NACRE impossible";
