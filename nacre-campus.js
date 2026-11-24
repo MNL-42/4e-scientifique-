@@ -97,7 +97,7 @@
       empty.innerHTML=assignmentRows.length?'<strong>Aucun devoir dans cette catégorie.</strong><span>Change le filtre pour consulter les autres travaux.</span>':'<strong>Aucun devoir publié pour le moment.</strong><span>Les devoirs ajoutés par les professeurs apparaîtront ici.</span>';
       root.append(empty);return;
     }
-    filtered.forEach(a=>{
+    for(const a of filtered){
       const card=document.createElement("article");card.className="panel assignment-card";
       const subject=subjectRows.find(s=>s.id===a.subject_id)?.name||"Travail scolaire";
       const tag=document.createElement("p");tag.className="eyebrow";tag.textContent=subject+" · "+String(a.kind||"devoir").toUpperCase();
@@ -126,7 +126,7 @@
         card.append(list);
       }
       root.append(card);
-    });
+    }
   }
 
   async function submitAssignment(form){
