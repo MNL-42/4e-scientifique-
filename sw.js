@@ -1,4 +1,4 @@
-const CACHE = "science4-v8";
+const CACHE = "science4-v9";
 const CORE = [
   "./", "./index.html", "./offline.html", "./styles.css", "./app.js",
   "./manifest.webmanifest", "./supabase-config.js",
