@@ -83,7 +83,7 @@
     const {data:rows,error}=await supa.from("assignments").select("id,subject_id,title,instructions,due_at,points,kind,teacher_id,created_at").eq("status","publie").order("created_at",{ascending:false}).limit(60);
     if(error){console.warn("Devoirs:",error);root.innerHTML='<div class="empty-state"><strong>Chargement des devoirs impossible.</strong><span>Réessaie lorsque la connexion est disponible.</span></div>';return;}
     assignmentRows=rows||[];
-    const {data:mine,error:mineError}=await supa.from("assignment_submissions").select("id,assignment_id,answer_text,files,status,submitted_at,visibility").order("submitted_at",{ascending:false}).limit(100);
+    const {data:mine,error:mineError}=await supa.from("assignment_submissions").select("id,assignment_id,student_id,answer_text,files,status,submitted_at,visibility").order("submitted_at",{ascending:false}).limit(100);
     if(mineError)console.warn("Copies:",mineError);
     const submissions=mine||[];
     const done=new Set(submissions.map(s=>s.assignment_id));
@@ -269,6 +269,7 @@
   }
 
   async function boot(){
+    window.loadAssignments=loadAssignments;
     if(!window.supabase||!window.SCIENCE4_SUPABASE_URL||!window.SCIENCE4_SUPABASE_PUBLISHABLE_KEY){
       $("#teacher-access-title").textContent="Connexion NACRE indisponible";
       $("#teacher-access-text").textContent="Vérifie la configuration Supabase du campus.";
