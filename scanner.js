@@ -81,7 +81,7 @@
     const text=output.value.trim();if(!text)return;
     exportBtn.disabled=true;
     try{
-      await loadScript("https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js",()=>!!window.docx);
+      await loadScript("https://cdn.jsdelivr.net/npm/docx@9/dist/index.iife.js",()=>!!window.docx);
       const {Document,Packer,Paragraph,HeadingLevel}=window.docx;
       const name=($("#scanner-doc-name").value.trim()||"Notes de cours 4e Scientifique D").replace(/[\\/:*?"<>|]/g,"-");
       const children=[
