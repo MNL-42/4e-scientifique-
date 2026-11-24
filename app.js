@@ -68,9 +68,9 @@ initSharedCampus();
 /* Navigation mobile, thème persistant et progression du défi. */
 (function(){
  const root=document.documentElement,themeKey="science4_theme";
- const saved=localStorage.getItem(themeKey);if(saved==="light"||saved==="dark")root.dataset.theme=saved;
+ const saved=localStorage.getItem(themeKey);root.dataset.theme=saved==="dark"?"dark":"light";
  const themeButton=document.getElementById("theme-toggle");
- function syncTheme(){const light=root.dataset.theme==="light";themeButton.textContent=light?"☼":"◐";themeButton.setAttribute("aria-label",light?"Activer le thème sombre":"Activer le thème clair")}
+ function syncTheme(){const light=root.dataset.theme!=="dark";themeButton.textContent=light?"◐":"☼";themeButton.setAttribute("aria-label",light?"Activer le thème sombre":"Activer le thème clair");const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=light?"#10242a":"#172329"}
  themeButton?.addEventListener("click",()=>{root.dataset.theme=root.dataset.theme==="light"?"dark":"light";localStorage.setItem(themeKey,root.dataset.theme);syncTheme()});syncTheme();
  const more=document.getElementById("mobile-more"),menu=document.getElementById("more-menu");
  more?.addEventListener("click",()=>{const open=menu.hidden;menu.hidden=!open;more.setAttribute("aria-expanded",String(open))});
