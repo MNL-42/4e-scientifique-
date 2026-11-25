@@ -390,7 +390,7 @@
     }catch(error){
       console.error("NACRE:",error);
       $("#teacher-access-title").textContent="Connexion à NACRE impossible";
-      $("#teacher-access-text").innerHTML='La connexion anonyme doit être activée dans NACRE. Ouvre <a href="https://supabase.com/dashboard/project/pxkstvwikiwczwntfldl/auth/providers" target="_blank" rel="noopener">les paramètres Auth de Supabase</a>, active “Allow anonymous sign-ins” dans les fournisseurs, enregistre puis recharge SCIENCE 4.';
+      const reason=String(error?.message||error?.code||"Erreur inconnue");$("#teacher-access-text").innerHTML='La connexion NACRE a échoué : <strong>'+esc(reason)+'</strong><br>Le réglage des connexions anonymes est déjà activé. Vérifie que tu es sur le projet NACRE (pxkstvwikiwczwntfldl), puis recharge le campus. <a href="https://supabase.com/dashboard/project/pxkstvwikiwczwntfldl/auth/providers" target="_blank" rel="noopener">Ouvrir les paramètres Auth</a>.';
     }
   }
 
