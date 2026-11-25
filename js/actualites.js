@@ -1,0 +1,23 @@
+/* SCIENCE 4 — Fil d'actualités scolaire. Source éditoriale : data/actualites.json. */
+(function(){
+"use strict";
+var URL_JSON="data/actualites.json",CLE="s4_actus_cache_v1";
+var COULEURS={"Rentrée":"#1B3A6B","Gouvernement":"#2E6B4F","Santé":"#C8372D","EXETAT":"#B8860B","Réformes":"#5B3A8C","Orientation":"#0E7490","Examens":"#B8860B","Après le secondaire":"#2E6B4F"};
+var ICONES={"Rentrée":"🎒","Gouvernement":"🏛️","Santé":"🩺","EXETAT":"🎓","Réformes":"🛠️","Orientation":"🧭","Examens":"📝","Après le secondaire":"🚀"};
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]});}
+function lienSur(u){return /^https:\/\//i.test(u||"")?u:"#";}
+function depuis(iso,approx){var d=new Date(iso+"T12:00:00");if(isNaN(d.getTime()))return"";var j=Math.floor((Date.now()-d.getTime())/86400000),txt;if(j<1)txt="Aujourd'hui";else if(j===1)txt="Hier";else if(j<7)txt="Il y a "+j+" jours";else if(j<30)txt="Il y a "+Math.floor(j/7)+" sem.";else txt=d.toLocaleDateString("fr-FR",{day:"numeric",month:"short",year:"numeric"});return(approx?"vers ":"")+txt;}
+function visuel(a){var c=COULEURS[a.categorie]||"#1B3A6B",ic=ICONES[a.categorie]||"📰",img=a.image&&/^https:\/\//i.test(a.image)?'<img src="'+esc(a.image)+'" alt="" loading="lazy" onerror="this.remove()">':"";return'<div class="s4-vis" style="background:linear-gradient(135deg,'+c+',#0f2547)"><span>'+ic+'</span>'+img+'</div>';}
+function carte(a){return'<a class="s4-carte" href="'+esc(lienSur(a.lien))+'" target="_blank" rel="noopener noreferrer">'+visuel(a)+'<div class="s4-corps"><div class="s4-meta"><b>'+esc(a.source)+'</b> · '+esc(depuis(a.date,a.date_approx))+'</div><h3>'+esc(a.titre)+'</h3><p>'+esc(a.resume)+'</p><span class="s4-tag">'+esc(a.categorie)+'</span></div></a>';}
+function une(a){return'<a class="s4-slide" href="'+esc(lienSur(a.lien))+'" target="_blank" rel="noopener noreferrer">'+visuel(a)+'<div class="s4-voile"><span class="s4-tag">'+esc(a.categorie)+'</span><h3>'+esc(a.titre)+'</h3><small>'+esc(a.source)+' · '+esc(depuis(a.date,a.date_approx))+'</small></div></a>';}
+function rendre(data){var arts=(data.articles||[]).slice().sort(function(x,y){return y.date<x.date?-1:1;}),uneEl=document.getElementById("s4-une"),listeEl=document.getElementById("s4-actus");if(uneEl)uneEl.innerHTML='<div class="s4-carrousel">'+arts.slice(0,4).map(une).join("")+'</div>';if(!listeEl)return;
+var cats=["Tout"].concat(arts.map(function(a){return a.categorie;}).filter(function(v,i,t){return t.indexOf(v)===i;}));
+listeEl.innerHTML='<div class="s4-outils"><input id="s4-q" type="search" placeholder="Rechercher une actualité…" aria-label="Rechercher"><div class="s4-filtres">'+cats.map(function(c,i){return'<button type="button" class="s4-f'+(i?"":" on")+'" data-c="'+esc(c)+'">'+esc(c)+'</button>';}).join("")+'</div></div><div id="s4-liste"></div><p class="s4-maj">Mise à jour : '+esc(data.mis_a_jour||"")+' · Vérifie toujours la source d’origine.</p>';
+var cat="Tout",q="";function filtrer(){var r=arts.filter(function(a){return(cat==="Tout"||a.categorie===cat)&&(a.titre+" "+a.resume+" "+a.source).toLowerCase().indexOf(q)>-1;});document.getElementById("s4-liste").innerHTML=r.length?r.map(carte).join(""):'<p class="s4-vide">Aucune actualité trouvée.</p>';}
+listeEl.addEventListener("click",function(e){var b=e.target.closest(".s4-f");if(!b)return;cat=b.getAttribute("data-c");listeEl.querySelectorAll(".s4-f").forEach(function(x){x.classList.toggle("on",x===b)});filtrer();});
+document.getElementById("s4-q").addEventListener("input",function(e){q=e.target.value.toLowerCase();filtrer();});filtrer();}
+function squelette(){var s='<div class="s4-sk"></div>'.repeat(3),a=document.getElementById("s4-actus"),u=document.getElementById("s4-une");if(a)a.innerHTML=s;if(u)u.innerHTML='<div class="s4-sk s4-sk-une"></div>';}
+function erreur(){var a=document.getElementById("s4-actus");if(!a)return;a.innerHTML='<div class="s4-vide">Impossible de charger les actualités.<br><button type="button" id="s4-retry" class="s4-btn">Réessayer</button></div>';document.getElementById("s4-retry").addEventListener("click",charger);}
+function charger(){squelette();fetch(URL_JSON+"?v="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();}).then(function(d){try{localStorage.setItem(CLE,JSON.stringify(d));}catch(e){}rendre(d);}).catch(function(){try{var c=JSON.parse(localStorage.getItem(CLE));if(c)return rendre(c);}catch(e){}erreur();});}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",charger);else charger();
+})();
