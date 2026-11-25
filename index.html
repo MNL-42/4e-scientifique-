@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#10242a">
+<meta name="theme-color" content="#1B3A6B">
 <meta name="description" content="Le campus numérique de la 4e Scientifique : cours, entraide, devoirs et préparation à l'EXETAT.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="assets/science4-icon.svg" type="image/svg+xml">
@@ -11,6 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="css/theme.css">
 <title>SCIENCE 4 — Le campus de la classe</title>
 </head>
 <body>
@@ -41,42 +42,31 @@
 
   <main class="main-area">
     <header class="topbar">
-      <button class="menu-toggle" id="menu-toggle" aria-label="Ouvrir le menu">☰</button>
       <div class="breadcrumb"><span>CAMPUS</span><i>/</i><strong id="current-section">VUE GÉNÉRALE</strong></div>
       <div class="top-actions"><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Activer le mode clair" title="Changer de thème">◐</button><button class="install-button" id="install-app">Installer l’application</button><span class="date-label" id="today-label"></span><button class="profile-chip" data-view="profil"><span class="avatar" id="avatar-small">É</span><span id="top-user">Visiteur</span></button></div>
     </header>
 
     <section class="view active" id="view-accueil">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">4e SCIENTIFIQUE D · INSTITUT DE LA GOMBE 2 · KINSHASA</p>
-          <h1>La classe continue<br><em>après la sonnerie.</em></h1>
-          <p class="hero-intro">Un espace commun pour comprendre les cours, demander un coup de main, progresser ensemble et préparer la suite.</p>
-          <div class="hero-actions"><button class="button button-light" data-view="cours">Ouvrir les cours <span>↗</span></button><button class="text-button" data-view="sos">J'ai besoin d'aide <span>→</span></button></div>
-        </div>
-        <div class="hero-note">
-          <div class="note-top"><span>LE CARNET DE LA CLASSE</span><span>№ 04</span></div>
-          <div class="note-rule"></div>
-          <p class="note-quote">« Comprendre vaut mieux que réciter. »</p>
-          <p class="note-caption">Le savoir se construit à plusieurs : une question posée aujourd'hui peut débloquer toute la classe demain.</p>
-          <div class="note-bottom"><span>SCIENCE 4</span><span>ÉDITION COLLECTIVE</span></div>
+      <div class="s4-hero">
+        <small>4e SCIENTIFIQUE D · INSTITUT DE LA GOMBE 2 · RDC</small>
+        <h1>La classe continue <em>après la sonnerie.</em></h1>
+        <p>Cours, entraide, devoirs et préparation à l'EXETAT, au même endroit.</p>
+        <div class="s4-actions">
+          <a class="s4-btn" href="#cours" data-view="cours">Ouvrir les cours</a>
+          <a class="s4-btn sec" href="#sos" data-view="sos">J'ai besoin d'aide</a>
         </div>
       </div>
-
-      <section class="school-identity panel"><div><p class="eyebrow">ÉTABLISSEMENT</p><h2>Institut de la Gombe 2 – Don Bosco</h2><p>4e Scientifique D · Commune de la Gombe · Kinshasa, RDC</p><small>Repère d’adresse publié dans des annuaires : N° 3, avenue Nzongotolo, quartier Clinique. À confirmer auprès de l’établissement.</small></div><a href="https://www.google.com/maps/search/?api=1&query=Institut+de+la+Gombe+2+Don+Bosco+03+Avenue+Nzongotolo+Kinshasa" target="_blank" rel="noopener">Localiser l’école ↗</a></section><div class="install-banner" id="install-banner"><span class="install-symbol">S4</span><div><strong>Ton campus, toujours à portée de main.</strong><small>Installe SCIENCE 4 sur ton téléphone.</small></div><button type="button" id="install-banner-button">Installer</button><button type="button" class="install-close" id="install-banner-close" aria-label="Fermer">×</button></div><div class="visual-strip" aria-label="Découvrir le campus" tabindex="0"><article class="visual-tile"><img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=720&q=82" alt="Cahiers et livres de cours"><div><span>ARCHIVES DE LA CLASSE</span><strong>Les cours arrivent ici.</strong><small>Les PDF seront ajoutés progressivement après numérisation des cahiers.</small></div></article><article class="visual-tile"><img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=720&q=82" alt="Dossier de préparation aux examens"><div><span>OBJECTIF EXETAT</span><strong>Se préparer avec méthode.</strong><small>Révisions, exercices originaux et informations officielles.</small></div></article><article class="visual-tile"><img src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=720&q=82" alt="Deux élèves qui étudient ensemble"><div><span>TRAVAIL COLLECTIF</span><strong>La classe se soutient.</strong><small>Discussions, explications et demandes SOS.</small></div></article></div>
-      <div class="section-heading"><div><p class="eyebrow">TON ESPACE, EN UN COUP D'ŒIL</p><h2>On reprend où ?</h2></div><span class="section-aside">ACCÈS RAPIDES / 01—04</span></div>
-      <div class="quick-grid">
-        <button class="quick-card" data-view="cours"><span class="card-number">01 / RESSOURCES</span><strong>Les cours de la classe</strong><span>Retrouver les chapitres, fiches et documents déposés.</span><b>Explorer <i>↗</i></b></button>
-        <button class="quick-card accent-card" data-view="sos"><span class="card-number">02 / COUP DE MAIN</span><strong>Une question bloque ?</strong><span>Expose ton exercice. Un camarade ou un professeur peut répondre.</span><b>Ouvrir SOS <i>↗</i></b></button>
-        <button class="quick-card" data-view="exetat"><span class="card-number">03 / OBJECTIF EXAMEN</span><strong>Préparer l'EXETAT</strong><span>S'entraîner, consulter les ressources et suivre les informations.</span><b>Se préparer <i>↗</i></b></button>
-        <button class="quick-card" data-view="devoirs"><span class="card-number">04 / TRAVAIL</span><strong>Devoirs & travaux</strong><span>Voir les consignes, les échéances et les corrections.</span><b>Voir les travaux <i>↗</i></b></button>
+      <div class="s4-bloc"><h2>À la une</h2></div>
+      <div id="s4-une"></div>
+      <div class="s4-bloc">
+        <h2>Accès rapides</h2>
+        <div class="s4-acces">
+          <a href="#cours" data-view="cours"><span>📚</span><b>Les cours</b><small>Chapitres et fiches</small></a>
+          <a href="#sos" data-view="sos"><span>🆘</span><b>SOS</b><small>Une question bloque ?</small></a>
+          <a href="#exetat" data-view="exetat"><span>🎓</span><b>EXETAT</b><small>Préparer l'examen</small></a>
+          <a href="#devoirs" data-view="devoirs"><span>📝</span><b>Devoirs</b><small>Consignes et dates</small></a>
+        </div>
       </div>
-
-      <div class="lower-grid">
-        <section class="panel activity-panel"><div class="panel-heading"><div><p class="eyebrow">TABLEAU DE BORD</p><h3>À suivre cette semaine</h3></div><span class="live-tag">ESPACE CLASSE</span></div><div id="weekly-list" class="empty-state compact"><strong>Le tableau de la classe est prêt.</strong><span>Les devoirs et dates seront affichés ici dès leur publication.</span></div></section>
-        <section class="panel quote-panel"><p class="eyebrow">NOTE DE MÉTHODE</p><h3>Une petite avancée vaut mieux qu'une révision remise à demain.</h3><p>Choisis un chapitre. Travaille vingt minutes. Note ce que tu n'as pas compris. Puis demande de l'aide.</p><button class="text-button" data-view="defis">Commencer un défi <span>→</span></button></section>
-      </div>
-      <footer class="page-footer"><span>SCIENCE 4 — 4e SCIENTIFIQUE D · INSTITUT DE LA GOMBE 2</span><span>APPRENDRE · PARTAGER · AVANCER</span></footer>
     </section>
 
     <section class="view" id="view-scanner">
@@ -95,11 +85,11 @@
       </div>
     </section>
     <section class="view" id="view-cours">
-      <div class="page-intro"><p class="eyebrow">ARCHIVES PÉDAGOGIQUES</p><h1>Les cours de la classe.</h1><p>Les cours seront numérisés à partir des cahiers utilisés en classe. Les PDF seront ajoutés progressivement par l'administrateur et les professeurs autorisés. Chaque document sera classé par matière, chapitre et date.</p></div><div class="upload-notice"><span class="notice-mark">PDF</span><div><strong>Les PDF des cours arrivent progressivement.</strong><p>Les cahiers sont en cours de numérisation. Aucun faux cours n'est affiché : les documents apparaîtront ici dès leur ajout.</p></div></div>
+      <div class="page-intro"><p class="eyebrow">ARCHIVES PÉDAGOGIQUES</p><h1>Les cours de la classe.</h1><p>Les cours seront numérisés à partir des cahiers utilisés en classe. Les PDF seront ajoutés progressivement par l'administrateur et les professeurs autorisés. Chaque document sera classé par matière, chapitre et date.</p></div><div class="s4-bloc"><h2>Cahiers numérisés</h2></div><div id="s4-cours"></div><div class="upload-notice"><span class="notice-mark">PDF</span><div><strong>Les PDF des cours arrivent progressivement.</strong><p>Les cahiers sont en cours de numérisation. Aucun faux cours n'est affiché : les documents apparaîtront ici dès leur ajout.</p></div></div>
       <div class="toolbar"><label class="search-box"><span>⌕</span><input id="course-search" type="search" placeholder="Rechercher un cours, un chapitre…"></label><select id="subject-filter" aria-label="Filtrer par matière"><option value="">Toutes les matières</option><option>Mathématiques</option><option>Physique</option><option>Chimie</option><option>Biologie</option><option>Informatique</option><option>Français</option><option>Anglais</option><option>Histoire</option><option>Géographie</option><option>Éducation civique et morale</option></select><select id="course-month-filter" aria-label="Filtrer les PDF par mois"><option value="">Tous les mois</option></select></div>
       <div class="subject-grid" id="subject-grid"></div>
       <div class="section-heading small-heading"><div><p class="eyebrow">DOCUMENTS DISPONIBLES</p><h2>La bibliothèque</h2></div><span class="section-aside" id="course-count">0 DOCUMENT</span></div>
-      <div id="course-list" class="resource-list"><div class="empty-state"><strong>La bibliothèque attend ses premiers cahiers.</strong><span>Les cours seront ajoutés à partir des scans et PDF fournis par l'administrateur de la classe.</span></div></div>
+      <div class="s4-bloc"><h2>PDF déposés par les professeurs</h2></div><div id="course-list" class="resource-list"><div class="empty-state"><strong>La bibliothèque attend ses premiers cahiers.</strong><span>Les cours seront ajoutés à partir des scans et PDF fournis par l'administrateur de la classe.</span></div></div>
     </section>
 
     <section class="view" id="view-exetat">
@@ -136,8 +126,25 @@
     </section>
 
     <section class="view" id="view-actualites">
-      <div class="page-intro"><p class="eyebrow">ÉDUCATION EN RDC</p><h1>Le fil EXETAT de la RDC.</h1><p>Actualités, calendrier, épreuves, résultats et diplômes. Chaque article affiche sa date, son média et un lien vers sa publication d’origine. Les annonces non officielles sont clairement distinguées.</p></div>
-            <div class="news-feed-toolbar"><div class="news-filters" id="news-filters"><button type="button" class="news-filter active" data-filter="tout">Tout</button><button type="button" class="news-filter" data-filter="exetat">EXETAT</button><button type="button" class="news-filter" data-filter="resultats">Résultats</button><button type="button" class="news-filter" data-filter="epreuves">Épreuves</button><button type="button" class="news-filter" data-filter="inscriptions">Inscriptions</button><button type="button" class="news-filter" data-filter="diplomes">Diplômes</button><button type="button" class="news-filter" data-filter="calendrier">Calendrier</button><button type="button" class="news-filter" data-filter="archives">Archives</button></div><button type="button" id="news-refresh" class="news-refresh">Actualiser ↻</button></div><p class="news-feed-status" id="news-feed-status">Actualités vérifiées et sources officielles.</p><div id="news-feed" class="news-feed"><div class="empty-state"><strong>Chargement des actualités…</strong><span>Les annonces de classe et les actualités enregistrées dans NACRE apparaîtront ici.</span></div></div><div class="section-heading small-heading"><div><p class="eyebrow">LIENS DIRECTS</p><h2>Sources à suivre</h2></div></div><div class="source-list"><a href="https://www.edu-nc.gouv.cd/exetat" target="_blank" rel="noopener"><span>EXAMEN D'ÉTAT</span><b>Consulter ↗</b></a><a href="https://www.edu-nc.gouv.cd/epreuves-certificatives" target="_blank" rel="noopener"><span>ÉPREUVES CERTIFICATIVES</span><b>Consulter ↗</b></a></div>
+      <div class="s4-bloc"><h2>Actualités éducation RDC</h2></div>
+      <div id="s4-actus"></div>
+      <!-- Compatibilité temporaire avec le fil NACRE existant : conservé caché pour ne pas interrompre ses abonnements. -->
+      <div hidden aria-hidden="true">
+        <div id="news-filters">
+          <button type="button" data-filter="tout"></button><button type="button" data-filter="exetat"></button>
+          <button type="button" data-filter="resultats"></button><button type="button" data-filter="epreuves"></button>
+          <button type="button" data-filter="inscriptions"></button><button type="button" data-filter="diplomes"></button>
+          <button type="button" data-filter="calendrier"></button><button type="button" data-filter="archives"></button>
+        </div>
+        <button type="button" id="news-refresh"></button>
+        <p id="news-feed-status"></p><div id="news-feed"></div>
+      </div>
+      <div class="section-heading small-heading"><div><p class="eyebrow">SOURCES À SUIVRE</p><h2>Liens officiels</h2></div></div>
+      <div class="source-list">
+        <a href="https://www.edu-nc.gouv.cd/exetat" target="_blank" rel="noopener"><span>EXAMEN D'ÉTAT</span><b>Consulter ↗</b></a>
+        <a href="https://edu-nc.gouv.cd/calendrier-scolaire" target="_blank" rel="noopener"><span>CALENDRIER SCOLAIRE</span><b>Consulter ↗</b></a>
+        <a href="https://diplome.cd/" target="_blank" rel="noopener"><span>E-DIPLÔME OFFICIEL</span><b>Consulter ↗</b></a>
+      </div>
     </section>
 
     <section class="view" id="view-professeur"><div class="page-intro"><p class="eyebrow">ESPACE PÉDAGOGIQUE</p><h1>Le travail des professeurs.</h1><p>Les enseignants validés peuvent publier des devoirs, déposer des supports, expliquer une notion et répondre aux demandes SOS des élèves.</p></div><div class="teacher-status panel"><span class="eyebrow">ACCÈS ENSEIGNANT</span><h2 id="teacher-access-title">Vérification du profil nécessaire</h2><p id="teacher-access-text">Les enseignants s’inscrivent avec un code d’invitation délivré par l’administrateur. Les droits sont vérifiés par NACRE à chaque opération.</p></div><div class="teacher-grid"><form class="panel" id="assignment-form"><p class="eyebrow">NOUVEAU DEVOIR</p><h3>Publier un travail</h3><label>Matière<select id="assignment-subject"><option>Mathématiques</option><option>Physique</option><option>Chimie</option><option>Biologie</option><option>Informatique</option><option>Français</option><option>Anglais</option></select></label><label>Titre<input id="assignment-title" placeholder="Titre du devoir" required></label><label>Consigne<textarea id="assignment-description" rows="4" placeholder="Explique le travail demandé…" required></textarea></label><label>Date limite<input id="assignment-due" type="date"></label><button class="button button-dark" type="submit">Publier le devoir ↗</button><p class="form-note">La publication est réservée aux professeurs validés. Le site utilise le compte de classe créé automatiquement.</p></form><form class="panel" id="resource-upload-form"><p class="eyebrow">BIBLIOTHÈQUE DE COURS</p><h3>Ajouter un PDF de cours</h3><label>Matière<select id="resource-subject"><option>Mathématiques</option><option>Physique</option><option>Chimie</option><option>Biologie</option><option>Informatique</option><option>Français</option><option>Anglais</option><option>Histoire</option><option>Géographie</option><option>ECM</option></select></label><label>Titre du document<input id="resource-title" required placeholder="Ex. : Chapitre 2 — Les fonctions"></label><label>Chapitre<input id="resource-chapter" placeholder="Nom du chapitre"></label><label>Mois du cours<input id="resource-month" type="month" required></label><label>Fichier PDF<input id="resource-file" type="file" accept="application/pdf" required></label><button class="button button-dark" type="submit">Déposer le PDF ↗</button><p class="form-note">Réservé aux professeurs validés. Les PDF seront visibles par les élèves après publication.</p></form><form class="panel" id="announcement-form"><p class="eyebrow">INFORMATION DE CLASSE</p><h3>Publier une annonce</h3><label>Titre<input id="announcement-title" required maxlength="160" placeholder="Ex. : Changement de salle"></label><label>Message<textarea id="announcement-body" rows="4" required maxlength="3000" placeholder="Informations utiles à toute la classe…"></textarea></label><label>Lien source <span class="optional">(facultatif)</span><input id="announcement-source" type="url" placeholder="https://…"></label><button class="button button-dark" type="submit">Publier l’annonce</button><p class="form-note">Visible par tous les membres après validation de ton rôle professeur.</p></form><div class="panel teacher-guide"><p class="eyebrow">MISSIONS DE L’ENSEIGNANT</p><h3>Accompagner la classe</h3><ul><li>Déposer les cours PDF et les supports de révision.</li><li>Publier des devoirs avec une date limite.</li><li>Consulter les copies privées des élèves.</li><li>Envoyer un retour privé à chaque élève.</li><li>Publier une annonce pédagogique.</li></ul></div></div><section class="panel teacher-submissions-panel" id="teacher-submissions-panel" hidden><p class="eyebrow">CORRECTIONS ET SUIVI</p><h3>Copies reçues des élèves</h3><div id="teacher-submissions" class="teacher-submissions"><div class="empty-state"><strong>Aucune copie reçue.</strong><span>Les travaux envoyés par les élèves apparaîtront ici.</span></div></div></section><section class="panel admin-invite-panel" id="admin-invite-panel" hidden><p class="eyebrow">ADMINISTRATION DES ACCÈS</p><h3>Créer un code professeur</h3><p class="form-note">Chaque enseignant doit recevoir un code privé. Ne publie jamais ce code dans le salon de classe.</p><form id="teacher-invite-form"><label>Nombre d’utilisations<input name="uses" type="number" min="1" max="50" value="1" required></label><label>Validité en jours<input name="days" type="number" min="1" max="365" value="30" required></label><button class="button button-dark" type="submit">Générer un code professeur</button></form><div id="teacher-invite-result" class="invite-result" hidden><strong>Code à remettre à l’enseignant :</strong><code></code><button id="teacher-invite-copy" type="button">Copier le code</button></div></section></section>
@@ -153,5 +160,8 @@
 <script src="app.js"></script>
 <script src="nacre-campus.js"></script>
 <script src="scanner.js"></script>
+<script src="js/nav-bas.js" defer></script>
+<script src="js/actualites.js" defer></script>
+<script src="js/visionneur.js" defer></script>
 </body>
 </html>
