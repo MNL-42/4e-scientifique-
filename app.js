@@ -4,7 +4,7 @@ const labels={accueil:"VUE GÉNÉRALE",cours:"LES COURS",scanner:"SCANNER UN CAH
 const toast=(message)=>{const el=$("#toast");el.textContent=message;el.classList.add("show");clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.remove("show"),2600)};
 function showView(name){if(!views.includes(name))return;$$(".view").forEach(v=>v.classList.toggle("active",v.id==="view-"+name));$(".nav-link[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===name));$(".mobile-nav-item").forEach(b=>b.classList.toggle("active",b.dataset.view===name));$("#current-section").textContent=labels[name];$("#sidebar").classList.remove("open");window.scrollTo({top:0,behavior:"smooth"});if(location.hash!=="#"+name)history.replaceState(null,"","#"+name)}
 $$("[data-view]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
-$("#menu-toggle").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
+$("#menu-toggle")?.addEventListener("click",()=>$("#sidebar")?.classList.toggle("open"));
 document.addEventListener("click",e=>{if(window.innerWidth<=760&&!e.target.closest("#sidebar")&&!e.target.closest("#menu-toggle"))$("#sidebar").classList.remove("open")});
 const date=new Date();$("#today-label").textContent=new Intl.DateTimeFormat("fr-FR",{weekday:"short",day:"2-digit",month:"short"}).format(date).toUpperCase();
 function connection(){const online=navigator.onLine;$("#connection-label").textContent=online?"Connexion disponible":"Mode hors connexion";$(".status-dot").classList.toggle("online",online)}window.addEventListener("online",connection);window.addEventListener("offline",connection);connection();
@@ -83,7 +83,7 @@ async function loadAnnouncements(){if(!supa||!currentUser)return;const {data,err
  const root=document.documentElement,themeKey="science4_theme_v2";
  const saved=localStorage.getItem(themeKey);root.dataset.theme=saved==="dark"?"dark":"light";
  const themeButton=document.getElementById("theme-toggle");
- function syncTheme(){const light=root.dataset.theme!=="dark";themeButton.textContent=light?"◐":"☼";themeButton.setAttribute("aria-label",light?"Activer le thème sombre":"Activer le thème clair");const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=light?"#10242a":"#172329"}
+ function syncTheme(){const light=root.dataset.theme!=="dark";themeButton.textContent=light?"◐":"☼";themeButton.setAttribute("aria-label",light?"Activer le thème sombre":"Activer le thème clair");const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content="#1B3A6B"}
  themeButton?.addEventListener("click",()=>{root.dataset.theme=root.dataset.theme==="light"?"dark":"light";localStorage.setItem(themeKey,root.dataset.theme);syncTheme()});syncTheme();
  const more=document.getElementById("mobile-more"),menu=document.getElementById("more-menu");
  more?.addEventListener("click",()=>{const open=menu.hidden;menu.hidden=!open;more.setAttribute("aria-expanded",String(open))});
