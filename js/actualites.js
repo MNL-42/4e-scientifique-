@@ -11,7 +11,7 @@ function visuel(a){var c=COULEURS[a.categorie]||"#1B3A6B",u=imageOf(a);return'<d
 function carte(a){return'<a class="s4-carte" href="'+esc(lienSur(a.lien||a.source_url))+'" target="_blank" rel="noopener noreferrer">'+visuel(a)+'<div class="s4-corps"><div class="s4-meta"><b>'+esc(a.source||a.source_name||"Source")+'</b> · '+esc(depuis(a.date||a.published_on))+'</div><h3>'+esc(a.titre||a.title)+'</h3><p>'+esc(a.resume||a.summary||"Consulte la publication originale.")+'</p><span class="s4-tag">'+esc(a.categorie||a.category||"Éducation")+'</span></div></a>';}
 function une(a){return'<a class="s4-slide" href="'+esc(lienSur(a.lien||a.source_url))+'" target="_blank" rel="noopener noreferrer">'+visuel(a)+'<div class="s4-voile"><span class="s4-tag">'+esc(a.categorie||a.category||"Éducation")+'</span><h3>'+esc(a.titre||a.title)+'</h3><small>'+esc(a.source||a.source_name||"Source")+' · '+esc(depuis(a.date||a.published_on))+'</small></div></a>';}
 function render(data){
-var arts=(data.articles||[]).slice().sort(function(x,y){return new Date(y.date||0)-new Date(x.date||0);});
+var arts=(data.articles||[]).filter(function(a){return !!imageOf(a);}).slice().sort(function(x,y){return new Date(y.date||0)-new Date(x.date||0);});
 var uneEl=document.getElementById("s4-une"),listeEl=document.getElementById("s4-actus");
 if(uneEl)uneEl.innerHTML='<div class="s4-carrousel">'+arts.slice(0,4).map(une).join("")+'</div>';
 if(!listeEl)return;
