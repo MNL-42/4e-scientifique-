@@ -20,6 +20,7 @@
     const initial=(p?.prenom||"É").charAt(0).toUpperCase();
     $("#avatar-small").textContent=initial;$("#profile-avatar").textContent=initial;
     $("#profile-form").hidden=!!p;
+    document.querySelectorAll("#s4-plus [data-id=\"view-professeur\"]").forEach(el=>el.hidden=!staff());
     const status=$("#teacher-access-title"), desc=$("#teacher-access-text");
     if(status&&desc){
       status.textContent=staff()?"Accès pédagogique autorisé":"Accès réservé aux enseignants";
@@ -40,6 +41,7 @@
     profile=null;role=null;
     $("#profile-name").textContent="Visiteur";$("#top-user").textContent="Visiteur";$("#profile-role-label").textContent="Aucun profil enregistré";$("#avatar-small").textContent="É";$("#profile-avatar").textContent="É";
     $("#profile-form").hidden=false;
+    document.querySelectorAll("#s4-plus [data-id=\"view-professeur\"]").forEach(el=>el.hidden=true);
     $("#teacher-access-title").textContent=data?.suspended?"Compte suspendu":"Aucun profil de classe";
     $("#teacher-access-text").textContent=data?.suspended?"Ce compte est suspendu. Contacte l’administration de la classe.":"Crée ton profil. Les élèves s’inscrivent directement ; les professeurs doivent utiliser un code d’invitation valide.";
     $$(".teacher-grid form, #teacher-submissions-panel").forEach(el=>el.hidden=true);
