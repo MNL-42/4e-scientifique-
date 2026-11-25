@@ -1,0 +1,16 @@
+/* SCIENCE 4 — Visionneur de cahiers numérisés depuis data/cours.json. */
+(function(){
+"use strict";var racine=document.getElementById("s4-cours");if(!racine)return;
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function chemin(p){p=String(p||"");if(/^https:\/\//i.test(p))return p;if(/^[A-Za-z0-9_\-\/.]+$/.test(p)&&p.indexOf("..")===-1)return p;return"";}
+var cours=[],matiere="Toutes";
+function liste(){var mats=["Toutes"].concat(cours.map(function(c){return c.matiere;}).filter(function(v,i,t){return t.indexOf(v)===i;})),vis=cours.filter(function(c){return matiere==="Toutes"||c.matiere===matiere;});
+racine.innerHTML='<div class="s4-filtres">'+mats.map(function(m){return'<button type="button" class="s4-f'+(m===matiere?" on":"")+'" data-m="'+esc(m)+'">'+esc(m)+'</button>';}).join("")+'</div>'+
+(vis.length?'<div class="s4-grille">'+vis.map(function(c){var cv=chemin(c.couverture||(c.pages&&c.pages[0]));return'<button type="button" class="s4-cours" data-i="'+cours.indexOf(c)+'"><div class="s4-couv">'+(cv?'<img src="'+esc(cv)+'" alt="" loading="lazy" onerror="this.remove()">':"")+'<span>📘</span></div><b>'+esc(c.titre)+'</b><small>'+esc(c.matiere)+' · '+(c.pages?c.pages.length:0)+' pages</small></button>';}).join("")+'</div>':'<div class="s4-vide">📚 Les premiers cours arrivent bientôt.<br><small>Les cahiers de la classe seront ajoutés ici après numérisation.</small></div>');}
+function ouvrir(i){var c=cours[i];if(!c)return;var m=document.createElement("div");m.className="s4-modal";m.innerHTML='<header><button type="button" class="s4-x" aria-label="Fermer">✕</button><b>'+esc(c.titre)+'</b><span id="s4-pg">1/'+c.pages.length+'</span></header><div class="s4-pages"></div>';var zone=m.querySelector(".s4-pages");
+(c.pages||[]).forEach(function(p,n){var u=chemin(p);if(!u)return;var fig=document.createElement("figure");fig.dataset.n=n+1;var img=new Image();img.loading="lazy";img.alt=c.titre+" — page "+(n+1);img.src=u;img.onerror=function(){fig.innerHTML='<div class="s4-vide">Page '+(n+1)+' indisponible.</div>';};fig.appendChild(img);zone.appendChild(fig);});
+document.body.appendChild(m);document.body.classList.add("s4-bloque");var pg=m.querySelector("#s4-pg");if("IntersectionObserver"in window){var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)pg.textContent=e.target.dataset.n+"/"+c.pages.length;});},{root:zone,threshold:.5});[].forEach.call(zone.children,function(f){o.observe(f);});}
+m.querySelector(".s4-x").onclick=function(){m.remove();document.body.classList.remove("s4-bloque");};}
+racine.addEventListener("click",function(e){var f=e.target.closest(".s4-f");if(f){matiere=f.getAttribute("data-m");liste();return;}var c=e.target.closest(".s4-cours");if(c)ouvrir(+c.getAttribute("data-i"));});
+racine.innerHTML='<div class="s4-sk"></div>';fetch("data/cours.json?v="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();}).then(function(d){cours=d.cours||[];liste();}).catch(function(){racine.innerHTML='<div class="s4-vide">Cours indisponibles. Vérifie ta connexion puis recharge.</div>';});
+})();
