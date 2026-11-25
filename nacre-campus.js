@@ -413,6 +413,7 @@
   $("#teacher-submissions")?.addEventListener("submit",async e=>{const f=e.target.closest(".teacher-feedback-form");if(!f)return;e.preventDefault();e.stopImmediatePropagation();await saveTeacherFeedback(f);},true);
   $("#teacher-invite-form")?.addEventListener("submit",async e=>{e.preventDefault();e.stopImmediatePropagation();await createTeacherInvite(e.currentTarget);},true);
   $("#teacher-invite-copy")?.addEventListener("click",async()=>{const code=$("#teacher-invite-result code")?.textContent||"";if(!code)return;try{await navigator.clipboard.writeText(code);say("Code copié.");}catch{say("Sélectionne le code pour le copier.");}});
+  window.addEventListener("hashchange",()=>{if(!staff()&&location.hash==="#professeur"&&typeof showView==="function")showView("profil");});
   document.addEventListener("click",e=>{
     const nav=e.target.closest('[data-view="professeur"]');
     if(nav&&!staff()){e.preventDefault();e.stopImmediatePropagation();say("Espace réservé aux enseignants validés.");if(typeof showView==="function")showView("profil");}
