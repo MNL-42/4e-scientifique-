@@ -360,6 +360,7 @@
       currentUser=session?.user||null;
       if(!currentUser)throw new Error("Session anonyme absente");
       const registered=await getContext();
+      if(!staff()&&document.querySelector(".view.active")?.id==="view-professeur"&&typeof showView==="function")showView("profil");
       await loadSubjects();
       if(registered){await Promise.all([loadCourses(),loadAssignments()]);await fetchLiveExamNews(false);await loadNews();if(staff())await loadTeacherSubmissions();}
       supa.channel("science4-nacre-updates")
