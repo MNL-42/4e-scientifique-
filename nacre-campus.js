@@ -318,6 +318,22 @@
     form.reset();say("Cours PDF publié dans la bibliothèque.");await loadCourses();
   }
 
+  window.SCIENCE4_PUBLISH_DOCX=async function(blob,name,subjectId,chapter,month){
+    if(!staff()||!profile||!currentUser)throw new Error("Publication réservée à un professeur validé. Connecte-toi avec ton compte professeur.");
+    if(!month)throw new Error("Choisis le mois du cours.");
+    if(!(blob instanceof Blob)||blob.size>25*1024*1024)throw new Error("Le document Word est invalide ou dépasse 25 Mo.");
+    const {data:course,error}=await supa.from("courses").insert({subject_id:subjectId,title:name,description:chapter||"Cahier numérisé",course_month:month+"-01",kind:"cours",status:"publie"}).select("id").single();
+    if(error)throw error;
+    const safe=(name||"cours").normalize("NFKD").replace(/[^a-zA-Z0-9._-]/g,"-").slice(0,90);
+    const path=profile.id+"/"+course.id+"/"+Date.now()+"-"+safe+".docx";
+    const mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    const {error:uploadError}=await supa.storage.from("documents").upload(path,blob,{contentType:mime,upsert:false});
+    if(uploadError){await supa.from("courses").delete().eq("id",course.id);throw uploadError;}
+    const {error:docError}=await supa.from("course_documents").insert({course_id:course.id,kind:"docx",role:"principal",bucket:"documents",storage_path:path,file_name:safe+".docx",mime_type:mime,size_bytes:blob.size,ocr_status:"aucun"});
+    if(docError){await supa.from("courses").delete().eq("id",course.id);throw docError;}
+    await loadCourses();return true;
+  };
+
   async function publishAnnouncement(form){
     if(!staff()){say("Seuls les comptes enseignants validés peuvent publier.");return;}
     const {error}=await supa.from("announcements").insert({
@@ -374,7 +390,7 @@
     }catch(error){
       console.error("NACRE:",error);
       $("#teacher-access-title").textContent="Connexion à NACRE impossible";
-      $("#teacher-access-text").textContent="La connexion anonyme doit être activée dans Supabase. Recharge ensuite SCIENCE 4.";
+      $("#teacher-access-text").innerHTML='La connexion anonyme doit être activée dans NACRE. Ouvre <a href="https://supabase.com/dashboard/project/pxkstvwikiwczwntfldl/auth/providers" target="_blank" rel="noopener">les paramètres Auth de Supabase</a>, active “Allow anonymous sign-ins” dans les fournisseurs, enregistre puis recharge SCIENCE 4.';
     }
   }
 
