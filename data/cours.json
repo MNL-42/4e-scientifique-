@@ -1,0 +1,12 @@
+{
+  "cours": [],
+  "_modele_pour_ajouter_un_cours": {
+    "titre": "Fonctions affines — Chapitre 1",
+    "matiere": "Mathématiques",
+    "couverture": "assets/cours/maths/ch1/page1.jpg",
+    "pages": [
+      "assets/cours/maths/ch1/page1.jpg",
+      "assets/cours/maths/ch1/page2.jpg"
+    ]
+  }
+}
