@@ -1,4 +1,4 @@
-const CACHE = "science4-v15";
+const CACHE = "science4-v16";
 const CORE = [
   "./", "./index.html", "./offline.html", "./styles.css", "./app.js",
   "./manifest.webmanifest", "./supabase-config.js", "./nacre-campus.js", "./scanner.js",
