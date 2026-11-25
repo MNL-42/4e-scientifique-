@@ -30,17 +30,29 @@ compass:'<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
 teacher:'<circle cx="9" cy="8" r="3"/><path d="M3 20c.5-3.5 2.5-5 6-5s5.5 1.5 6 5M16 5h5M18.5 3v4"/>'
 };
 function svg(name){return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+(PATHS[name]||PATHS.file)+'</svg>';}
-function marquer(id){document.querySelectorAll("#s4-nav [data-id]").forEach(function(b){b.classList.toggle("on",b.dataset.id===id)});}
+function marquer(id){
+var main=PRINCIPAUX.findIndex(function(o){return o.id===id;});
+var index=main>=0?main:5;
+var nav=document.getElementById("s4-nav");if(nav)nav.style.setProperty("--active-index",String(index));
+document.querySelectorAll("#s4-nav [data-id]").forEach(function(b){b.classList.toggle("on",b.dataset.id===id)});
+var more=nav&&nav.querySelector("[data-plus]");if(more)more.classList.toggle("on",index===5);
+}
+function syncVue(){var active=document.querySelector(".view.active");if(!active)return;var id=active.id;var item=PRINCIPAUX.concat(PLUS).find(function(o){return o.id===id});if(item)marquer(id);}
 function fermer(){var p=document.getElementById("s4-plus");if(p)p.classList.remove("ouvert");}
 function aller(o){if(!document.getElementById(o.id))return;if(typeof window.showView==="function")window.showView(o.vue);else{document.querySelectorAll(".view").forEach(function(v){v.classList.toggle("active",v.id===o.id)});history.replaceState(null,"","#"+o.vue);}marquer(o.id);fermer();}
 function bouton(o){return '<button type="button" data-id="'+o.id+'"><span class="s4-nav-icon">'+svg(o.ic)+'</span><small>'+o.nom+'</small></button>';}
 function monter(){if(document.getElementById("s4-nav"))return;
 var nav=document.createElement("nav");nav.id="s4-nav";nav.setAttribute("aria-label","Navigation principale");
-nav.innerHTML=PRINCIPAUX.map(bouton).join("")+'<button type="button" data-plus="1"><span class="s4-nav-icon s4-more">•••</span><small>Plus</small></button>';
+nav.innerHTML='<span class="s4-indicator" aria-hidden="true"></span>'+PRINCIPAUX.map(bouton).join("")+'<button type="button" data-plus="1"><span class="s4-nav-icon s4-more">•••</span><small>Plus</small></button>';
 var plus=document.createElement("div");plus.id="s4-plus";plus.innerHTML='<div class="s4-feuille"><i></i>'+PLUS.map(bouton).join("")+'</div>';
 document.body.appendChild(plus);document.body.appendChild(nav);document.body.classList.add("s4-avec-nav");
 document.addEventListener("click",function(e){var b=e.target.closest("#s4-nav [data-id],#s4-plus [data-id],#s4-nav [data-plus]");if(!b){if(e.target===plus)fermer();return;}if(b.hasAttribute("data-plus")){plus.classList.toggle("ouvert");return;}var o=PRINCIPAUX.concat(PLUS).find(function(x){return x.id===b.dataset.id});if(o)aller(o);});
-var active=document.querySelector(".view.active");var item=PRINCIPAUX.concat(PLUS).find(function(o){return active&&o.vue===active.id.replace("view-","")});if(item)marquer(item.id);
+syncVue();
+var observer=new MutationObserver(syncVue);
+document.querySelectorAll(".view").forEach(function(v){observer.observe(v,{attributes:true,attributeFilter:["class"]});});
+document.addEventListener("click",function(e){if(e.target.closest("[data-view]"))requestAnimationFrame(syncVue);});
+window.addEventListener("hashchange",syncVue);
+window.addEventListener("resize",syncVue);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",monter);else monter();
 })();
